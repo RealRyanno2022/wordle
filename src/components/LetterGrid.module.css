@@ -1,0 +1,9 @@
+.lettergrid{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background: gray;
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+}
