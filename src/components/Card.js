@@ -4,15 +4,17 @@ import Header from './Header';
 import LetterGrid from './LetterGrid';
 import Space from './Space';
 import Keyboard from './Keyboard';
+import InputModal from './InputModal';
 function Card() {
   return (
     <div className={styles.card}>
           <Header />
+    
       
       <LetterGrid />
 
         <Space />
-      <Keyboard />
+      {/* <Keyboard /> */}
     </div>
   )
 }

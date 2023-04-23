@@ -4,7 +4,7 @@ function Enter(props) {
   const {keyValue} = props;
   return (
     <div>
-        <div className={styles.enter}>{keyValue}</div>
+        <div className={styles.enter}>ENTER</div>
     </div>
   )
 }
