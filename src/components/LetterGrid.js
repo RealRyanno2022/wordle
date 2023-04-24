@@ -9,6 +9,7 @@ import backspaceImage from './backspaceImage.png';
 
 function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
+  const [input, setInput] = useState([]);
 
   function handleKeyClick(clickedLetter) {
     const newLetterGrid = [...letterGrid];
@@ -20,8 +21,10 @@ function LetterGrid() {
   }
 
   function handleBackspaceClick() {
-    console.log("Lol");
+    
     const newLetterGrid = [...letterGrid];
+    input.pop();
+    console.log(input);
     const lastLetterIndex = newLetterGrid.findLastIndex(char => char !== '');
     if (lastLetterIndex !== -1) {
       newLetterGrid[lastLetterIndex] = '';
@@ -29,28 +32,44 @@ function LetterGrid() {
     }
   }
 
+  let enterCount = 0;
+
   function handleKeyPress(e) {
     const clickedLetter = e.key;
-
-      if (typeof clickedLetter === "string" && clickedLetter !== "") {
-        const emptyIndex = letterGrid.indexOf('');
-        if (emptyIndex !== -1) {
-          const newLetterGrid = [...letterGrid];
-          newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
-          setLetterGrid(newLetterGrid);
-        }
+    let rowTest = 1;
+    console.log(enterCount);
+  
+    if (typeof clickedLetter === "string" && clickedLetter !== "") {
+      if (input.length % 5 === 0 && enterCount != rowTest && input.length > 1) {
+        // And enter hasn't been pressed
+        return;
+      } else {
+        console.log("Put in more letters... 2");
       }
-    
-
-    
+  
+      input.push(clickedLetter.toUpperCase());
+      console.log(input);
+      const emptyIndex = letterGrid.indexOf('');
+      if (emptyIndex !== -1) {
+        const newLetterGrid = [...letterGrid];
+        newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
+        setLetterGrid(newLetterGrid);
+      }
+    }
   }
+  
   console.log(letterGrid);
-
+  console.log(input);
+  
   function handleEnterClick() {
-      console.log("wok");
-
-
-
+    if (input.length % 5 === 0 && input.length > 1) {
+      console.log("Success");
+      enterCount++;
+      console.log("Evaluating your answer...");
+    } else {
+      console.log("Failure");
+      console.log("You need to put in more letters");
+    }
   }
 
   useEffect(() => {
@@ -107,7 +126,7 @@ function LetterGrid() {
         ))}
       </div>
       <div className={styles.keyboard}>
-        <Enter onClick={() => handleEnterClick('ENTER')}>ENTER</Enter>
+        <Enter onClick={() => handleEnterClick()}></Enter>
         <Key onClick={() => handleKeyClick('Z')}>Z</Key>
         <Key onClick={() => handleKeyClick('X')}>X</Key>
         <Key onClick={() => handleKeyClick('C')}>C</Key>
