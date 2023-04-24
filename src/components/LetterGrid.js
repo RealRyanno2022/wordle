@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './LetterGrid.module.css';
 import Letter from './Letter';
 import Key from './Key';
@@ -11,13 +11,8 @@ function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(' '));
   const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
   const [currentBoxValue, setCurrentBoxValue] = useState('');
-  const [highlightedLetters, setHighlightedLetters] = useState(...Array(30).fill(' '));
+  const [highlightedLetters, setHighlightedLetters] = useState(Array(30).fill(' '));
   const [letterCount, setLetterCount] = useState(0);
-  const [enteredLetters, setEnteredLetters] = useState([]);
-  const [letterGridState, setLetterGridState] = useState(Array(30).fill(''));
-  const [letterCountState, setLetterCountState] = useState(0);
-  const [isValidWordState, setIsValidWordState] = useState(false);
-  const [correctWordState, setCorrectWordState] = useState('abbot');
   const [prevGameState, setPrevGameState] = useState({});
   const [gameState, setGameState] = useState({
     letterGrid: Array(30).fill(''),
@@ -26,55 +21,7 @@ function LetterGrid() {
     correctWord: 'abbot'
   });
 
-  useEffect(() => {
-    function handleKeyDown(event) {
-      const key = event.key.toUpperCase();
-      if (/^[A-Z]$/.test(key)) {
-        handleKeyClick(key);
-      } else if (key === 'BACKSPACE') {
-        handleBackspaceClick();
-      } else if (key === 'ENTER') {
-        handleEnterClick();
-      }
-    }
-  
-    document.addEventListener('keydown', handleKeyDown);
-  
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  function handleKeyClick(letter) {
-    if (currentBoxIndex < 30) {
-      setLetterGrid((prevState) => {
-        const newLetterGrid = [...prevState];
-        newLetterGrid[currentBoxIndex] = letter;
-        return newLetterGrid;
-      });
-  
-      setHighlightedLetters((prevState) => {
-        const newHighlightedLetters = [...prevState];
-        newHighlightedLetters[currentBoxIndex] = "black";
-        return newHighlightedLetters;
-      });
-  
-      setCurrentBoxIndex((prevState) => prevState + 1);
-      setCurrentBoxValue("");
-  
-      // Increment letter count
-      setLetterCount((prevState) => prevState + 1);
-    }
-  }
-
-  function handleBackspaceClick() {
-    const newLetterGrid = [...letterGrid];
-    newLetterGrid[currentBoxIndex - 1] = '';
-    setLetterGrid(newLetterGrid);
-    setCurrentBoxIndex(currentBoxIndex - 1);
-  }
-
-  function handleEnterClick() {
+  function handleEnterClick(letterGrid, prevGameState, setHighlightedLetters, setGameState, setCurrentBoxValue) {
     let isValidWord = false;
     const enteredLetters = letterGrid.slice(0, 5);
     const highlightedLetters = Array(5).fill('black');
@@ -123,11 +70,54 @@ function LetterGrid() {
         letterCount: 0,
         isValidWord,
       }));
-      setCurrentBoxIndex(0);
       setCurrentBoxValue('');
     }
   }
+  
+  function handleKeyClick(event) {
+    const clickedLetter = event.key.toUpperCase();
+    const emptyBoxIndex = letterGrid.findIndex((value) => value === '');
+    
+    if (/^[A-Z]$/.test(clickedLetter) && emptyBoxIndex !== -1 && letterCount < 5) {
+      const newLetterGrid = [...letterGrid];
+      newLetterGrid[emptyBoxIndex] = clickedLetter;
+      setLetterGrid(newLetterGrid);
+      setLetterCount(letterCount + 1);
+    }
+  }
+  
+  function handleBackspaceClick(letterGrid, currentBoxIndex, setLetterGrid, setCurrentBoxIndex) {
+    if (currentBoxIndex > 0) {
+      const newLetterGrid = [...letterGrid];
+      newLetterGrid[currentBoxIndex - 1] = '';
+      setLetterGrid(newLetterGrid);
+      setCurrentBoxIndex(currentBoxIndex - 1);
+    }
+  }
+  
 
+  function handleKeyDown(event) {
+    let clickedLetter = '';
+    const key = event.key.toUpperCase();
+    if (event.key === 'Enter') {
+      handleEnterClick(letterGrid, prevGameState, setHighlightedLetters, setGameState, setCurrentBoxValue);
+    } else if (event.key === 'Backspace') {
+      handleBackspaceClick(letterGrid, currentBoxIndex, setLetterGrid, setCurrentBoxIndex);
+    } else {
+      handleKeyClick(event);
+    }
+  }
+
+
+  useEffect(() => {
+    
+  
+    window.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [letterGrid, prevGameState, setHighlightedLetters, setGameState, setCurrentBoxIndex, setLetterGrid, letterCount, setLetterCount, currentBoxIndex]);  
 
   return (
         <div>
