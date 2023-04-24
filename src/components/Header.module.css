@@ -1,5 +1,34 @@
 .header {
-    margin-top: 100px;
-    background: green;
-    width: 100%;
-}
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 20px;
+  }
+  
+  .header__logo {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  .header__links a {
+    margin-right: 60px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    font-size: 32px;
+  }
+  
+  .header__links a:hover {
+    color: #555;
+  }
+  
+  .header__links a:last-child {
+    margin-right: 0;
+  }
+  
+  .header__links svg {
+    width: 24px;
+    height: 24px;
+    color: #1da1f2;
+  }

@@ -22,3 +22,15 @@
     font-family: 'HelveticaNeue';
     src: url('../../public/fonts/HelveticaNeue.otf');
 }
+
+.green {
+    background-color: green;
+  }
+  
+  .yellow {
+    background-color: yellow;
+  }
+  
+  .black {
+    background-color: blue;
+  }

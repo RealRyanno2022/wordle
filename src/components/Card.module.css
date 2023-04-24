@@ -1,6 +1,5 @@
 .card {
     /* background: black; */
-    position: fixed;
     top: 0;
     bottom:0;
     right:0;
@@ -9,4 +8,13 @@
     /* display: flex; 
     /justify-content: center; */
     align-items: center; 
+    transform-origin: center bottom;
+    transition: transform 0.3s ease-in-out; 
+   
 }
+
+@media (min-width: 768px) {
+    .MyComponent:hover {
+      transform: translateY(-5px) scale(1.2);
+    }
+  }

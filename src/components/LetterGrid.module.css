@@ -18,3 +18,15 @@
 .space {
     margin-top: 50px;
 }
+
+.green {
+    background-color: green;
+  }
+  
+  .yellow {
+    background-color: yellow;
+  }
+  
+  .black {
+    background-color: black;
+  }

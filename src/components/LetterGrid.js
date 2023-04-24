@@ -1,139 +1,154 @@
 import React, { useState, useEffect } from 'react';
-import Letter from './Letter';
 import styles from './LetterGrid.module.css';
-import words from '../words/words.js';
-import InputModal from './InputModal';
+import Letter from './Letter';
 import Key from './Key';
 import Enter from './Enter';
 import Backspace from './Backspace';
+import InputModal from './InputModal';
 import backspaceImage from './backspaceImage.png';
 
-function LetterGrid(props) {
-  const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
+function LetterGrid() {
+  const [letterGrid, setLetterGrid] = useState(Array(30).fill(' '));
+  const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
+  const [currentBoxValue, setCurrentBoxValue] = useState('');
+  const [highlightedLetters, setHighlightedLetters] = useState(...Array(30).fill(' '));
   const [letterCount, setLetterCount] = useState(0);
-  const [correctWord, setCorrectWord] = useState('');
-
+  const [enteredLetters, setEnteredLetters] = useState([]);
+  const [letterGridState, setLetterGridState] = useState(Array(30).fill(''));
+  const [letterCountState, setLetterCountState] = useState(0);
+  const [isValidWordState, setIsValidWordState] = useState(false);
+  const [correctWordState, setCorrectWordState] = useState('abbot');
+  const [prevGameState, setPrevGameState] = useState({});
   const [gameState, setGameState] = useState({
     letterGrid: Array(30).fill(''),
     letterCount: 0,
     isValidWord: false,
+    correctWord: 'abbot'
   });
 
   useEffect(() => {
     function handleKeyDown(event) {
-      const keyPressed = event.key.toUpperCase();
-      if (/^[A-Z]$/.test(keyPressed)) {
-        handleKeyClick(keyPressed);
-      } else if (keyPressed === 'ENTER') {
+      const key = event.key.toUpperCase();
+      if (/^[A-Z]$/.test(key)) {
+        handleKeyClick(key);
+      } else if (key === 'BACKSPACE') {
+        handleBackspaceClick();
+      } else if (key === 'ENTER') {
         handleEnterClick();
       }
     }
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  });
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "Backspace") {
-        handleBackspaceClick(letterGrid);
-      }
-    };
   
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
   
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [letterGrid]);
-
-  useEffect(() => {
-    setCorrectWord(chooseWord());
   }, []);
 
-  function chooseWord() {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    console.log(words[randomIndex]);
-    return words[randomIndex];
+  function handleKeyClick(letter) {
+    if (currentBoxIndex < 30) {
+      setLetterGrid((prevState) => {
+        const newLetterGrid = [...prevState];
+        newLetterGrid[currentBoxIndex] = letter;
+        return newLetterGrid;
+      });
+  
+      setHighlightedLetters((prevState) => {
+        const newHighlightedLetters = [...prevState];
+        newHighlightedLetters[currentBoxIndex] = "black";
+        return newHighlightedLetters;
+      });
+  
+      setCurrentBoxIndex((prevState) => prevState + 1);
+      setCurrentBoxValue("");
+  
+      // Increment letter count
+      setLetterCount((prevState) => prevState + 1);
+    }
+  }
+
+  function handleBackspaceClick() {
+    const newLetterGrid = [...letterGrid];
+    newLetterGrid[currentBoxIndex - 1] = '';
+    setLetterGrid(newLetterGrid);
+    setCurrentBoxIndex(currentBoxIndex - 1);
   }
 
   function handleEnterClick() {
     let isValidWord = false;
-    if (gameState.letterCount === 5) {
-      const firstFiveChars = gameState.letterGrid.slice(0, 5).join('');
-      if (words.includes(firstFiveChars)) {
-        console.log(true);
-        isValidWord = true;
-      } else {
-        console.log(false);
-      }
-    }
-
-    // Update game state with the new letter grid and count
-    setGameState(prevState => ({
-      ...prevState,
-      letterGrid: Array(30).fill(''),
-      letterCount: 0,
-      isValidWord
-    }));
-  }
-
-  function handleKeyClick(clickedLetter) {
-    const emptyBoxIndex = letterGrid.findIndex((value) => value === '');
-      
-    if (emptyBoxIndex !== -1 && letterCount < 5) {
-      const newLetterGrid = [...letterGrid];
-      newLetterGrid[emptyBoxIndex] = clickedLetter.toUpperCase();
-      setLetterGrid(newLetterGrid);
-      setLetterCount(letterCount + 1);
-    }
-  }
-
-  function handleBackspaceClick(letterGrid) {
-    const newLetterGrid = [...letterGrid]; // create a new copy of letterGrid
-    const lastNonEmptyIndex = newLetterGrid.reduceRight((acc, curr, index) => {
-      if (acc === -1 && curr !== "") {
-        return index;
-      }
-      return acc;
-    }, -1); // find the index of the last non-empty element in the array
+    const enteredLetters = letterGrid.slice(0, 5);
+    const highlightedLetters = Array(5).fill('black');
   
-    if (lastNonEmptyIndex !== -1) { // check if there is at least one non-empty element in the array
-      newLetterGrid[lastNonEmptyIndex] = ""; // set the last non-empty element to an empty string
-      setLetterGrid(newLetterGrid);
-      setLetterCount(letterCount - 1);
-    }
-  }
-
-  function isValidFiveLetterWord(letterGrid) {
-    const firstFiveChars = letterGrid.slice(0, 5).join('');
-    if (words.includes(firstFiveChars)) {
-      console.log(true);
-      return true;
-    } else {
-      console.log(false);
-      return false;
+    // Check if the user has entered five letters
+    if (enteredLetters.length === 5) {
+      // Check for duplicate letters
+      if (new Set(enteredLetters).size !== enteredLetters.length) {
+        console.log("Duplicate letters detected!");
+        return;
+      }
+  
+      // Check for invalid input
+      if (!/^[a-zA-Z]+$/.test(enteredLetters.join(''))) {
+        console.log("Invalid input detected!");
+        return;
+      }
+  
+      // check each entered letter against the correct word
+      for (let i = 0; i < enteredLetters.length; i++) {
+        const enteredLetter = enteredLetters[i];
+        if (prevGameState.correctWord.includes(enteredLetter)) {
+          if (prevGameState.correctWord[i] === enteredLetter) {
+            // correct letter in correct place
+            highlightedLetters[i] = 'green';
+          } else {
+            // correct letter in wrong place
+            highlightedLetters[prevGameState.correctWord.indexOf(enteredLetter)] = 'yellow';
+          }
+        } else {
+          // letter not in correct word
+          highlightedLetters[i] = 'black';
+        }
+      }
+  
+      // check if all entered letters are in the correct word
+      if (enteredLetters.every(letter => prevGameState.correctWord.includes(letter))) {
+        isValidWord = true;
+      }
+  
+      setHighlightedLetters(highlightedLetters);
+  
+      setGameState(prevState => ({
+        ...prevState,
+        letterGrid: Array(30).fill(' '),
+        letterCount: 0,
+        isValidWord,
+      }));
+      setCurrentBoxIndex(0);
+      setCurrentBoxValue('');
     }
   }
 
 
   return (
-
-    <div>
+        <div>
       <InputModal letterGrid={letterGrid} />
 
       {[...Array(6)].map((_, row) => (
         <div className={styles.lettergrid} key={row}>
-          {letterGrid.slice(row * 5, row * 5 + 5).map((boxValue, col) => (
-            <Letter boxValue={boxValue} key={row * 5 + col} />
-          ))}
+          {[...Array(5)].map((_, col) => {
+            const index = row * 5 + col;
+            const highlightColor = highlightedLetters[index];
+            return (
+              <Letter
+                boxValue={letterGrid[index]}
+                key={index}
+                highlightColor={highlightColor}
+                highlightedLetters={highlightedLetters}
+              />
+            );
+          })}
         </div>
       ))}
-      <div className={styles.space}>
-
-      </div>
-
 
       <div className={styles.keyboard}>
         {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter) => (
@@ -142,13 +157,15 @@ function LetterGrid(props) {
           </Key>
         ))}
       </div>
+
       <div className={styles.keyboard}>
-      {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter) => (
-        <Key key={letter} onClick={() => handleKeyClick(letter)}>
-          {letter}
-        </Key>
-      ))}
+        {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter) => (
+          <Key key={letter} onClick={() => handleKeyClick(letter)}>
+            {letter}
+          </Key>
+        ))}
       </div>
+
       <div className={styles.keyboard}>
         <Enter onClick={() => handleEnterClick('ENTER')}>ENTER</Enter>
         <Key onClick={() => handleKeyClick('Z')}>Z</Key>
@@ -160,21 +177,15 @@ function LetterGrid(props) {
         <Key onClick={() => handleKeyClick('M')}>M</Key>
         <Backspace onClick={() => handleBackspaceClick('BACKSPACE')}>
           <img 
-          src={backspaceImage} 
-          width="37" 
-          height="40" 
-          style=
-            {{
-              filter: 
-                "brightness(0), grayscale(100%) !important"
-            }} 
-          alt="Backspace" 
+            src={backspaceImage} 
+            width="37" 
+            height="40" 
+            style={{ filter: "brightness(0) grayscale(100%) !important" }} 
+            alt="Backspace" 
           />
         </Backspace>
       </div>
-
-        
-      </div>
+    </div>
     
   );
 }
