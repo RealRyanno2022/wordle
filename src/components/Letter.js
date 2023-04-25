@@ -1,17 +1,26 @@
 import styles from './Letter.module.css';
-function Letter(props) {
-  const { boxValue, highlightColor,highlightedColors, highlightedLetters } = props;
-  const classes = [styles.letter];
-  if (highlightColor === 'green') {
-    classes.push(styles.green);
-  } else if (highlightColor === 'yellow') {
-    classes.push(styles.yellow);
-  } else if (highlightColor === 'black'){
-    classes.push(styles.black);
-  } else {
-    classes.push(styles.letter);
+
+function Letter({ boxValue, color }) {
+  let colorClass = styles.letter; // default color class
+
+  if (color === 'green') {
+    colorClass = styles.green;
+    console.log("buzz");
+  } else if (color === 'yellow') {
+    colorClass = styles.yellow;
+    console.log("buzz");
+  } else if (color === 'black') {
+    colorClass = styles.black;
+    console.log("buzz");
+  } else if (color === 'gray') {
+    colorClass = styles.gray;
   }
-  
-  return <div className={classes.join(' ')}>{boxValue}</div>;
+
+  return (
+    <div className={`${styles.letter} ${colorClass}`}>
+      {boxValue}
+    </div>
+  );
 }
+
 export default Letter;

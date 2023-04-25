@@ -10,6 +10,10 @@ import backspaceImage from './backspaceImage.png';
 function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
   const [input, setInput] = useState([]);
+  const [colors, setColors] = useState(Array(6).fill("gray"));
+  const [newColors, setNewColors] = useState([]);
+  const [enterCount, setEnterCount] = useState(0);
+  const [funcCount, setFuncCount] = useState(1);
 
   function handleKeyClick(clickedLetter) {
     const newLetterGrid = [...letterGrid];
@@ -21,7 +25,6 @@ function LetterGrid() {
   }
 
   function handleBackspaceClick() {
-    
     const newLetterGrid = [...letterGrid];
     input.pop();
     console.log(input);
@@ -32,7 +35,6 @@ function LetterGrid() {
     }
   }
 
-  let enterCount = 0;
 
   function handleKeyPress(e) {
     const clickedLetter = e.key;
@@ -47,13 +49,17 @@ function LetterGrid() {
         console.log("Put in more letters... 2");
       }
   
-      input.push(clickedLetter.toUpperCase());
-      console.log(input);
-      const emptyIndex = letterGrid.indexOf('');
-      if (emptyIndex !== -1) {
-        const newLetterGrid = [...letterGrid];
-        newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
-        setLetterGrid(newLetterGrid);
+      if (clickedLetter === "Enter") {
+        e.preventDefault(); // Prevent the default Enter behavior
+      } else {
+        input.push(clickedLetter.toUpperCase());
+        console.log(input);
+        const emptyIndex = letterGrid.indexOf('');
+        if (emptyIndex !== -1) {
+          const newLetterGrid = [...letterGrid];
+          newLetterGrid[emptyIndex] = clickedLetter
+          setLetterGrid(newLetterGrid);
+        }
       }
     }
   }
@@ -62,14 +68,43 @@ function LetterGrid() {
   console.log(input);
   
   function handleEnterClick() {
-    if (input.length % 5 === 0 && input.length > 1) {
+    let funcCount = 1;
+    
+    if (input.length % 5 === 0 && input.length > 1 && funcCount != enterCount) {
       console.log("Success");
       enterCount++;
+      // How many times the function activated, to prevent people from putting in a multiple of 5 elements and spamming enter
+      funcCount++;
       console.log("Evaluating your answer...");
+
+
+      decideColors(input, "ABOTT");
     } else {
       console.log("Failure");
       console.log("You need to put in more letters");
     }
+  }
+
+  const correctWord = "ABOTT";
+
+
+  function decideColors(input, correctWord) {
+    const newColors = [];
+    for (let i = 0; i < input.length; i++) {
+      const letter = input[i];
+      const index = correctWord.indexOf(letter);
+      if (index === i) {
+        newColors.push('green');
+      } else if (index !== -1) {
+        newColors.push('yellow');
+      } else {
+        newColors.push('black');
+      }
+    }
+    console.log(newColors[2]);
+
+    setColors(newColors);
+    
   }
 
   useEffect(() => {
@@ -93,19 +128,21 @@ function LetterGrid() {
     };
   }, [letterGrid]);
 
- 
+
 
   return (
     <div>
       <InputModal letterGrid={letterGrid} />
       {[...Array(6)].map((_, row) => (
-        <div className={styles.lettergrid} key={row}>
+        <div className={styles.lettergrid}  key={row}>
           {[...Array(5)].map((_, col) => {
             const index = row * 5 + col;
             return (
               <Letter
                 boxValue={letterGrid[index]}
+                // colors={newColors[index]}
                 key={index}
+                style= {{ backgroundColor: colors[index] }}
               />
             );
           })}
@@ -126,7 +163,7 @@ function LetterGrid() {
         ))}
       </div>
       <div className={styles.keyboard}>
-        <Enter onClick={() => handleEnterClick()}></Enter>
+        <Enter onClick={() => handleEnterClick()}>ENTER</Enter>
         <Key onClick={() => handleKeyClick('Z')}>Z</Key>
         <Key onClick={() => handleKeyClick('X')}>X</Key>
         <Key onClick={() => handleKeyClick('C')}>C</Key>
