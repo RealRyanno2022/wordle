@@ -1,16 +1,13 @@
-import React from 'react';
+import React from 'react'
 import styles from './Enter.module.css';
 
-const Enter = (props) => {
+function Enter(props) {
+  const { keyValue } = props;
   return (
-    <div className={styles.enter} onClick={props.onClick}>
-      {props.showInputModalMessage ? (
-        <div className={`${styles.enterText} ${styles.shake}`}>Enter more letters!</div>
-      ) : (
-        <div className={styles.enterText}>Add more letters!</div>
-      )}
+    <div>
+      <div onClick={props.onClick} className={styles.enter}></div>
     </div>
   );
-};
+}
 
 export default Enter;

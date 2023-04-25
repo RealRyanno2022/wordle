@@ -1,56 +1,37 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-import words from "../words/words";
-import styles from "./InputModal.module.css";
+import React from 'react'
+import { useState } from 'react';
+import words from '../words/words';
+function InputModal(props) {
+  const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
 
-const InputModal = forwardRef((props, ref) => {
-  const [shake, setShake] = useState(false);
+  let inputMessage = "eee";
+  const isLetterGridFilled = letterGrid.filter((value) => value !== '').length >= 5;
 
-  const isValidFiveLetterWord = (letterGrid) => {
-    const firstFiveChars = letterGrid.slice(0, 5).join("");
-    return words.includes(firstFiveChars);
-  };
-
-  const handleEnter = () => {
-    if (props.letterGrid.filter((value) => value !== "").length % 5 === 0) {
-      let inputMessage;
-      if (isValidFiveLetterWord(props.letterGrid)) {
-        inputMessage = "Valid word!";
-      } else {
-        inputMessage = "Add more letters!";
-        setShake(true);
-        setTimeout(() => {
-          setShake(false);
-        }, 500);
-      }
-    }
-  };
-
-  useImperativeHandle(ref, () => ({
-    handleEnter,
-  }));
-
-  // Calculate inputMessage
-  let inputMessage;
-  if (props.letterGrid.filter((value) => value !== "").length % 5 === 0) {
-    if (isValidFiveLetterWord(props.letterGrid)) {
-      inputMessage = "Valid word!";
+  function isValidFiveLetterWord(letterGrid) {
+    const firstFiveChars = letterGrid.slice(0, 5).join('');
+    if (words.includes(firstFiveChars)) {
+      console.log(true);
+      return true;
     } else {
-      inputMessage = "Add more letters!";
+      console.log(false);
+      return false;
     }
   }
 
-  return (
+  if (isLetterGridFilled) {
+    if (isValidFiveLetterWord(props.letterGrid)) {
+      inputMessage = "Valid word!";
+    } else {
+      inputMessage = "That's not a valid word!";
+    }
+  }
+
+  inputMessage = "eee";
+  return (  
     <div>
-      <h1
-        className={shake ? styles.shakeAnimation : ""}
-      >
-        {props.letterGrid.filter((value) => value !== "").length % 5 === 0
-          ? inputMessage
-          : ""}
-        {props.showInputModalMessage && <div className={styles.message}>Enter more letters!</div>}
-      </h1>
+      <h1>{isLetterGridFilled ? inputMessage : 'Hello world!'}</h1>
     </div>
-  );
-});
+  )
+}
 
 export default InputModal;

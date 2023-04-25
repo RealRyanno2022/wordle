@@ -33,11 +33,23 @@ background-color: gray;
 `;
 
 function Letter({ boxValue, color }) {
-return (
-<LetterWrapper className={color}>
-{boxValue}
-</LetterWrapper>
-);
+  let colorClass = styles.letter; // default color class
+
+  if (color === 'green') {
+    colorClass = styles.green;
+  } else if (color === 'yellow') {
+    colorClass = styles.yellow;
+  } else if (color === 'black') {
+    colorClass = styles.black;
+  } else if (color === 'gray') {
+    colorClass = styles.gray;
+  }
+
+  return (
+    <div className={`${styles.letter} ${colorClass}`}>
+      {boxValue}
+    </div>
+  );
 }
 
 export default Letter;
