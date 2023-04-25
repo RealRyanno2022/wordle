@@ -98,39 +98,35 @@ function LetterGrid() {
    
   
   function decideColors(input, correctWord) {
-    const newColors = [];
+    let newColors = [];
+   
+    
+  
+    for (let i = 0; i < input.length; i++) {
+      const letter = input[i];
+      if (letter === correctWord[i]) {
+        newColors[i] = 'green';   
+    
+      }
     }
-  
-    // for (let i = 0; i < input.length; i++) {
-    //   const letter = input[i];
-    //   if (letter === correctWord[i]) {
-    //     newColors[i] = 'green';          
-    //   } else if () {
-    //       newColors[i] = 'yellow';
-    //   } else {
-    //     newColors[i] = 'gray';
-    //   }
+
+    for (let i = 0; i < input.length; i++) {
+      const letter = input[i];
+      if () {
+
+       
+      } else {
+        newColors[i] = 'gray';  
+      }
+    }
+
+    console.log(newColors);
+    setColors(newColors);
+  }
 
 
 
 
-
-      // else if (correctWord.includes(letter) && !(letter === correctWord[i])) {
-      //   JSON.stringify(newColors);
-      //   console.info(newColors[i]);
-      //     if(newColors[i] = 'green') {
-      //       newColors[i] = 'green';
-      //     } else {
-      //       newColors[i] = 'yellow';
-      //     }
-      // } else {
-      //   newColors[i] = 'gray';
-      // }
-    // }
-  
-    // console.log(newColors);
-  
-    // setColors(newColors);
   
 
 
