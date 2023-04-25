@@ -47,6 +47,7 @@ const InputModal = forwardRef((props, ref) => {
         {props.letterGrid.filter((value) => value !== "").length % 5 === 0
           ? inputMessage
           : ""}
+        {props.showInputModalMessage && <div className={styles.message}>Enter more letters!</div>}
       </h1>
     </div>
   );
