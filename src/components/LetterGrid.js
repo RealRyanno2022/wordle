@@ -11,7 +11,7 @@ function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
   const [input, setInput] = useState([]);
   const [colors, setColors] = useState(Array(6).fill("gray"));
-  const [newColors, setNewColors] = useState([]);
+  let [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
   const [funcCount, setFuncCount] = useState(1);
   const rowTest = 1;
@@ -38,10 +38,11 @@ function LetterGrid() {
       const inputIndex = input.length - 1;
       if (inputIndex % 5 === 4 && input.length >= 5) {
         // check if previous row is completed before allowing backspace
-      
-        return;
+        const prevRowCompleted = letterGrid.slice(lastLetterIndex - 4, lastLetterIndex).every(char => char !== '');
+        if (!prevRowCompleted) {
+          return;
+        }
       }
-      input.pop();
       newLetterGrid[lastLetterIndex] = '';
       setLetterGrid(newLetterGrid);
     }
@@ -75,8 +76,6 @@ function LetterGrid() {
     }
   }
   
-  console.log(letterGrid);
-  console.log(input);
   
   function handleEnterClick() {
     let funcCount = 1;
@@ -87,8 +86,7 @@ function LetterGrid() {
       // How many times the function activated, to prevent people from putting in a multiple of 5 elements and spamming enter
       funcCount++;
       console.log("Evaluating your answer...");
-
-
+  
       decideColors(input, "ABOTT");
     } else {
       console.log("Failure");
@@ -96,27 +94,45 @@ function LetterGrid() {
     }
   }
 
-  const correctWord = "ABOTT";
-
-
+ 
+   
+  
   function decideColors(input, correctWord) {
     const newColors = [];
-    for (let i = 0; i < input.length; i++) {
-      const letter = input[i];
-      const index = correctWord.indexOf(letter);
-      if (index === i) {
-        newColors.push('green');
-      } else if (index !== -1) {
-        newColors.push('yellow');
-      } else {
-        newColors.push('black');
-      }
     }
-    console.log(newColors[2]);
+  
+    // for (let i = 0; i < input.length; i++) {
+    //   const letter = input[i];
+    //   if (letter === correctWord[i]) {
+    //     newColors[i] = 'green';          
+    //   } else if () {
+    //       newColors[i] = 'yellow';
+    //   } else {
+    //     newColors[i] = 'gray';
+    //   }
 
-    setColors(newColors);
-    
-  }
+
+
+
+
+      // else if (correctWord.includes(letter) && !(letter === correctWord[i])) {
+      //   JSON.stringify(newColors);
+      //   console.info(newColors[i]);
+      //     if(newColors[i] = 'green') {
+      //       newColors[i] = 'green';
+      //     } else {
+      //       newColors[i] = 'yellow';
+      //     }
+      // } else {
+      //   newColors[i] = 'gray';
+      // }
+    // }
+  
+    // console.log(newColors);
+  
+    // setColors(newColors);
+  
+
 
   useEffect(() => {
 
@@ -141,6 +157,7 @@ function LetterGrid() {
 
 
 
+
   return (
     <div>
       <InputModal letterGrid={letterGrid} />
@@ -151,7 +168,7 @@ function LetterGrid() {
             return (
               <Letter
                 boxValue={letterGrid[index]}
-                // colors={newColors[index]}
+                colors={colors[index]}
                 key={index}
                 style= {{ backgroundColor: colors[index] }}
               />
@@ -187,6 +204,7 @@ function LetterGrid() {
     </div>
     
   );
+
 }
 
 export default LetterGrid;
