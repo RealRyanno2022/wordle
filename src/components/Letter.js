@@ -5,13 +5,10 @@ function Letter({ boxValue, color }) {
 
   if (color === 'green') {
     colorClass = styles.green;
-    console.log("buzz");
   } else if (color === 'yellow') {
     colorClass = styles.yellow;
-    console.log("buzz");
   } else if (color === 'black') {
     colorClass = styles.black;
-    console.log("buzz");
   } else if (color === 'gray') {
     colorClass = styles.gray;
   }
