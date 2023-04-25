@@ -5,23 +5,25 @@ import Key from './Key';
 import Enter from './Enter';
 import Backspace from './Backspace';
 import InputModal from './InputModal';
+import backspaceImage from './backspaceImage.png';
 
 function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
   const [input, setInput] = useState([]);
-  const [colors, setColors] = useState(Array(30).fill('gray'));
+  const [colors, setColors] = useState(Array(6).fill("gray"));
+  const [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
-  let [funcCount, setFuncCount] = useState(1);
-  const [canInput, setCanInput] = useState(true);
-  const [isInputEnabled, setIsInputEnabled] = useState(true);
-  const [canEnter, setCanEnter] = useState(true);
+  const [funcCount, setFuncCount] = useState(1);
+  const rowTest = 1;
 
   function handleKeyClick(clickedLetter) {
-    const newLetterGrid = [...letterGrid];
-    const emptyIndex = newLetterGrid.indexOf('');
-    if (emptyIndex !== -1) {
-      newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
-      setLetterGrid(newLetterGrid);
+    if (clickedLetter !== "Enter") {
+      const newLetterGrid = [...letterGrid];
+      const emptyIndex = newLetterGrid.indexOf('');
+      if (emptyIndex !== -1) {
+        newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
+        setLetterGrid(newLetterGrid);
+      }
     }
   }
 
@@ -29,12 +31,14 @@ function LetterGrid() {
 
   function handleBackspaceClick() {
     const newLetterGrid = [...letterGrid];
-    const lastLetterIndex = newLetterGrid.findLastIndex((char) => char !== '');
+    input.pop();
+    console.log(input);
+    const lastLetterIndex = newLetterGrid.findLastIndex(char => char !== '');
     if (lastLetterIndex !== -1) {
       const inputIndex = input.length - 1;
       if (inputIndex % 5 === 4 && input.length >= 5) {
         // check if previous row is completed before allowing backspace
-        setCanInput(true);
+      
         return;
       }
       input.pop();
@@ -43,91 +47,62 @@ function LetterGrid() {
     }
   }
 
+
+
   function handleKeyPress(e) {
-    const clickedLetter = e.key;
-    if (typeof clickedLetter === "string" && clickedLetter !== "") {
-      if (clickedLetter === "Enter") {
-        e.preventDefault();
-        if (input.length % 5 === 0 && input.length > 0) {
-          setEnterCount(enterCount + 1);
-          decideColors(input, "ABOTT");
-          setIsInputEnabled(true);
-          setCanEnter(false);
-          setCanInput(true);
-        } else if (canInput) {
-          setIsInputEnabled(true);
-          setCanInput(true);
+    const clickedLetter = e.key.toUpperCase();
+    console.log(clickedLetter);
+    if (clickedLetter !== "ENTER" && clickedLetter !== "Backspace") {
+      e.preventDefault(); // Prevent default behavior for non-Enter and non-Backspace keys
+      // Handle other keys
+      if (typeof clickedLetter === "string" && clickedLetter !== "") {
+        if (input.length % 5 === 0 && enterCount !== rowTest && input.length > 1) {
+          // And enter hasn't been pressed
+          return;
         } else {
-          console.log("You need to put in more letters");
+          console.log("Put in more letters... 2");
         }
-      } else if (isInputEnabled || canInput) {
-        setInput(input => [...input, clickedLetter.toUpperCase()]);
+  
+        input.push(clickedLetter.toUpperCase());
+        console.log(input);
         const emptyIndex = letterGrid.indexOf('');
         if (emptyIndex !== -1) {
           const newLetterGrid = [...letterGrid];
-          newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
+          newLetterGrid[emptyIndex] = clickedLetter;
           setLetterGrid(newLetterGrid);
-          if (input.length % 5 === 4) {
-            setIsInputEnabled(false);
-            setCanInput(false);
-          } else if (input.length % 5 === 0 && input.length > 0) {
-            setIsInputEnabled(true);
-            setCanInput(true);
-          }
-        } else {
-          console.log("You need to hit Enter before entering more letters");
         }
-      } 
+      }
     }
   }
-
+  
+  console.log(letterGrid);
+  console.log(input);
+  
   function handleEnterClick() {
-    if (input.length % 5 === 0 && input.length > 1 && funcCount !== enterCount) {
+    let funcCount = 1;
+    
+    if (input.length % 5 === 0 && input.length > 1 && funcCount != enterCount) {
       console.log("Success");
       enterCount++;
+      // How many times the function activated, to prevent people from putting in a multiple of 5 elements and spamming enter
       funcCount++;
       console.log("Evaluating your answer...");
-  
-      decideColors(letterGrid, "ABOTT");
-      setCanEnter(true);
-      setCanInput(true);
-      setIsInputEnabled(true); 
+
+
+      decideColors(input, "ABOTT");
     } else {
       console.log("Failure");
       console.log("You need to put in more letters");
     }
   }
 
-  function handleInputModalClick() {
-    const newLetterGrid = Array(30).fill('');
-    const newColors = Array(30).fill('gray');
-    setLetterGrid(newLetterGrid);
-    setColors(newColors);
-    setInput([]);
-    setEnterCount(0);
-    setFuncCount(1);
-    setCanInput(true);
-    setIsInputEnabled(true);
-    setCanEnter(true);
-  }
+  const correctWord = "ABOTT";
 
-  function handleRestartClick() {
-    const newLetterGrid = Array(30).fill('');
-    const newColors = Array(30).fill('gray');
-    setLetterGrid(newLetterGrid);
-    setColors(newColors);
-    setInput([]);
-    setEnterCount(0);
-    setFuncCount(1);
-    setCanInput(true);
-    setIsInputEnabled(true);
-    setCanEnter(true);
-  }
 
-  function decideColors(letterGrid, correctWord) {
+  function decideColors(input, correctWord) {
     const newColors = [];
-    for (let i = 0; i < letterGrid.length; i++) {
-      const letter = letterGrid[i];
+    for (let i = 0; i < input.length; i++) {
+      const letter = input[i];
       const index = correctWord.indexOf(letter);
       if (index === i) {
         newColors.push('green');
@@ -137,22 +112,48 @@ function LetterGrid() {
         newColors.push('black');
       }
     }
-  
+    console.log(newColors[2]);
+
     setColors(newColors);
+    
   }
+
+  useEffect(() => {
+
+    const backspaceHandler = (e) => {
+      if (e.key === 'Backspace') handleBackspaceClick();
+    };
+
+    const enterHandler = (e) => {
+      if (e.key === 'Enter') handleEnterClick();
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+    window.addEventListener('keydown', backspaceHandler);
+    window.addEventListener('keydown', enterHandler);
+  
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress);
+      window.removeEventListener('keydown', backspaceHandler);
+      window.removeEventListener('keydown', enterHandler);
+    };
+  }, [letterGrid]);
+
+
 
   return (
     <div>
-      <InputModal letterGrid={letterGrid} onClick={handleInputModalClick} />
+      <InputModal letterGrid={letterGrid} />
       {[...Array(6)].map((_, row) => (
-        <div className={styles.lettergrid} key={row}>
+        <div className={styles.lettergrid}  key={row}>
           {[...Array(5)].map((_, col) => {
             const index = row * 5 + col;
             return (
               <Letter
                 boxValue={letterGrid[index]}
+                // colors={newColors[index]}
                 key={index}
-                style={{ backgroundColor: colors[index] }}
+                style= {{ backgroundColor: colors[index] }}
               />
             );
           })}
@@ -173,7 +174,7 @@ function LetterGrid() {
         ))}
       </div>
       <div className={styles.keyboard}>
-        <Enter onClick={handleEnterClick} disabled={canEnter}>ENTER</Enter>
+        <Enter onClick={() => handleEnterClick()}>ENTER</Enter>
         <Key onClick={() => handleKeyClick('Z')}>Z</Key>
         <Key onClick={() => handleKeyClick('X')}>X</Key>
         <Key onClick={() => handleKeyClick('C')}>C</Key>
@@ -183,10 +184,8 @@ function LetterGrid() {
         <Key onClick={() => handleKeyClick('M')}>M</Key>
         <Backspace onClick={handleBackspaceClick} />
       </div>
-      <div className={styles.buttons}>
-        <button className={styles.restartButton} onClick={handleRestartClick}>RESTART</button>
-      </div>
     </div>
+    
   );
 }
 
