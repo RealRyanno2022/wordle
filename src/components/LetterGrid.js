@@ -14,10 +14,12 @@ function LetterGrid() {
   let [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
   const [funcCount, setFuncCount] = useState(1);
+  const [winState, setWinState] = useState({ win: false, guesses: 0 });
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const rowTest = 1;
 
   function handleKeyClick(clickedLetter) {
-    if (clickedLetter !== "Enter") {
+    if (clickedLetter !== "Enter" && !winState.win) {
       const newLetterGrid = [...letterGrid];
       const emptyIndex = newLetterGrid.indexOf('');
       if (emptyIndex !== -1) {
@@ -47,13 +49,16 @@ function LetterGrid() {
       setLetterGrid(newLetterGrid);
     }
   }
-
-
-
+  
   function handleKeyPress(e) {
     const clickedLetter = e.key.toUpperCase();
     console.log(clickedLetter);
     if (clickedLetter !== "ENTER" && clickedLetter !== "Backspace") {
+      if (winState.win || input.length === 5) {
+        // If the user has already won or has inputted 5 letters, don't handle the key press
+        return;
+      }
+  
       e.preventDefault(); // Prevent default behavior for non-Enter and non-Backspace keys
       // Handle other keys
       if (typeof clickedLetter === "string" && clickedLetter !== "") {
@@ -76,16 +81,38 @@ function LetterGrid() {
     }
   }
   
+  function toggleModal() {
+    setIsModalOpen(true);
+    if(isModalOpen) {
+      setIsModalOpen(false);
+    }
+  }
+  
+  useEffect(() => {
+    console.log(isModalOpen); // will log true
+  }, [isModalOpen]);
   
   function handleEnterClick() {
+    const userWon = input.every((letter, index) => letter === "ABOTT"[index % 5]);
+    if (userWon) {
+      console.log("Click");
+      setWinState((prevState) => ({ ...prevState, win: true }));
+      toggleModal(); // Show the modal
+    }
     let funcCount = 1;
-    
+  
     if (input.length % 5 === 0 && input.length > 1 && funcCount != enterCount) {
       console.log("Success");
       enterCount++;
-      // How many times the function activated, to prevent people from putting in a multiple of 5 elements and spamming enter
-      funcCount++;
-      console.log("Evaluating your answer...");
+  
+      // Increment the number of guesses
+      setWinState((prevState) => ({ ...prevState, guesses: prevState.guesses + 5 }));
+  
+      // Check if the user has won
+      const userWon = input.every((letter, index) => letter === "ABOTT"[index % 5]);
+      if (userWon) {
+        setWinState((prevState) => ({ ...prevState, win: true }));
+      }
   
       decideColors(input, "ABOTT");
     } else {
@@ -97,62 +124,35 @@ function LetterGrid() {
  
    
   
-  // function decideColors(input, correctWord) {
-  //   let newColors = [];
-  
-  //   for (let i = 0; i < input.length; i++) {
-  //     let letter = input[i];
-  //     let correctLetter = correctWord[i];
-  
-  //     if (letter === correctLetter) {
-  //       newColors[i] = 'green';
-  //     } else if (correctWord.includes(letter)) {
-  //       newColors[i] = 'yellow';
-  //     } else {
-  //       newColors[i] = 'gray';
-  //     }
-  //   }
-  
-  //   console.log(newColors);
-  //   setColors(newColors);
-  // }
+
 
   function decideColors(input, correctWord) {
     let newColors = [];
-  
+    let correctCount = 0;
+
     for (let i = 0; i < input.length; i++) {
       let letter = input[i];
       let correctIndex = i % correctWord.length;
       let correctLetter = correctWord[correctIndex];
-  
-      console.log(`Iteration ${i + 1}:`);
-      console.log(`  Input letter: ${letter}`);
-      console.log(`  Correct letter: ${correctLetter}`);
-  
+
       if (letter === correctLetter) {
         newColors[i] = 'green';
-        console.log(`  Result: green (correct position)`);
+        correctCount++;
       } else if (correctWord.includes(letter)) {
         newColors[i] = 'yellow';
-        console.log(`  Result: yellow (present in correctWord, but incorrect position)`);
       } else {
-        newColors[i] = 'gray';
-        console.log(`  Result: gray (not present in correctWord)`);
+        newColors[i] = '#444444';
       }
-  
-      console.log(`  newColors so far: ${newColors}`);
     }
-  
-    console.log("Final newColors:", newColors);
+
+    // Check for win condition
+    if (correctCount === correctWord.length) {
+      setWinState({ win: true, guesses: input.length });
+      toggleModal(); // Show the modal
+    }
+
     setColors(newColors);
   }
-  
-
-  
-
-
-
-  
 
 
   useEffect(() => {
@@ -176,12 +176,14 @@ function LetterGrid() {
     };
   }, [letterGrid]);
 
-
+  const guessCount = Math.floor(winState.guesses / 5);
 
 
   return (
     <div>
-      <InputModal letterGrid={letterGrid} />
+       <InputModal letterGrid={letterGrid} winState={winState} guessCount={guessCount} toggleModal={toggleModal} isOpen={isModalOpen} />
+
+
       {[...Array(6)].map((_, row) => (
         <div className={styles.lettergrid}  key={row}>
           {[...Array(5)].map((_, col) => {

@@ -1,37 +1,24 @@
-import React from 'react'
-import { useState } from 'react';
-import words from '../words/words';
-function InputModal(props) {
-  const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
+import React from 'react';
+import styles from './InputModal.module.css';
 
-  let inputMessage = "eee";
-  const isLetterGridFilled = letterGrid.filter((value) => value !== '').length >= 5;
+function InputModal({ letterGrid, winState, guessCount, toggleModal, isOpen }) {
 
-  function isValidFiveLetterWord(letterGrid) {
-    const firstFiveChars = letterGrid.slice(0, 5).join('');
-    if (words.includes(firstFiveChars)) {
-      console.log(true);
-      return true;
-    } else {
-      console.log(false);
-      return false;
-    }
-  }
 
-  if (isLetterGridFilled) {
-    if (isValidFiveLetterWord(props.letterGrid)) {
-      inputMessage = "Valid word!";
-    } else {
-      inputMessage = "That's not a valid word!";
-    }
-  }
-
-  inputMessage = "eee";
-  return (  
-    <div>
-      <h1>{isLetterGridFilled ? inputMessage : 'Hello world!'}</h1>
+  return (
+    <div className={`${styles.modal} ${isOpen ? styles.show : styles.hide}`}>
+      <h1 className={styles.title}>InputModal</h1>
+      {winState.win ? (
+        <p>
+          You win! Guesses: {guessCount}
+        </p>
+      ) : (
+        <p>
+          Keep trying! Guesses: {guessCount}
+        </p>
+      )}
+      <button onClick={toggleModal}>Close</button>
     </div>
-  )
+  );
 }
 
 export default InputModal;
