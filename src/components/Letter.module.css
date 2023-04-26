@@ -1,40 +1,43 @@
 .letter {
- 
-        /* background-color: gray; */
-        height: 60px;
-        display: inline-row;
-        width: 60px;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        font-family: helvetica;
-        display: flex;
+  height: 60px;
+  display: inline-row;
+  width: 60px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-family: helvetica;
+  display: flex;
+  font-weight: bold;
+  font-size: 28px;
+  border-radius: 10px;
+  margin: 1px;
+  background: gray;
+  transition: all 0.2s ease-in-out; /* Add this transition */
+}
 
-        font-weight: bold;
-        font-size: 28px;
-        border-radius: 10px;
-        margin: 1px;
-        background: gray;
-        /* background-color: transparent; */
-    }
-
-@font-face {
-    font-family: 'HelveticaNeue';
-    src: url('../../public/fonts/HelveticaNeue.otf');
+.letter:not(.empty):hover {
+  transform: scale(1.1); /* Add this hover effect */
 }
 
 .green {
-    background-color: green;
-  }
-  
-  .yellow {
-    background-color: yellow;
-  }
-  
-  .black {
-    background-color: #444444;
-  }
+  background-color: green;
+}
 
-  .gray {
-    background-color: gray;
-  }
+.yellow {
+  background-color: yellow;
+}
+
+.black {
+  background-color: #444444;
+}
+
+.gray {
+  background-color: gray;
+}
+
+.letter:not(.empty) {
+  transform: scale(1);
+}
+.letter.empty {
+  transform: scale(0.9);
+}

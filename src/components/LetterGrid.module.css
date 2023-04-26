@@ -9,6 +9,13 @@
     margin-top: 12px;
 }
 
+.letterGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+}
+
 .keyboard{
     align-items: center;
     justify-content: center;

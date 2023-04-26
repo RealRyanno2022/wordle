@@ -13,18 +13,28 @@ function LetterGrid() {
   const [colors, setColors] = useState(Array(6).fill("gray"));
   let [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
-  const [funcCount, setFuncCount] = useState(1);
+
   const [winState, setWinState] = useState({ win: false, guesses: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const rowTest = 1;
+  let [backspacePressed, setBackspacePressed] = useState(false);
+  let [rowTest, setRowTest] = useState(1);
 
   function handleKeyClick(clickedLetter) {
-    if (clickedLetter !== "Enter" && !winState.win) {
+    if (clickedLetter === "Enter") {
+      handleEnterClick();
+    } else if (!winState.win) {
+      const currentRowIndex = Math.floor(input.length / 5);
+      const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
+      if (currentRowLetters.length === 5 && enterCount !== rowTest) {
+        return;
+      }
+
       const newLetterGrid = [...letterGrid];
       const emptyIndex = newLetterGrid.indexOf('');
       if (emptyIndex !== -1) {
         newLetterGrid[emptyIndex] = clickedLetter.toUpperCase();
         setLetterGrid(newLetterGrid);
+        setInput([...input, clickedLetter.toUpperCase()]);
       }
     }
   }
@@ -32,8 +42,12 @@ function LetterGrid() {
   
 
   function handleBackspaceClick() {
+    if (backspacePressed) {
+      return;
+    }
+  
     const newLetterGrid = [...letterGrid];
-    input.pop();
+    setInput(input.slice(0, -1));
     console.log(input);
     const lastLetterIndex = newLetterGrid.findLastIndex(char => char !== '');
     if (lastLetterIndex !== -1) {
@@ -48,25 +62,36 @@ function LetterGrid() {
       newLetterGrid[lastLetterIndex] = '';
       setLetterGrid(newLetterGrid);
     }
+    setBackspacePressed(true);
+  }
+  
+  function handleBackspaceRelease() {
+    setBackspacePressed(false);
   }
   
   function handleKeyPress(e) {
     const clickedLetter = e.key.toUpperCase();
-    console.log(clickedLetter);
-    if (clickedLetter !== "ENTER" && clickedLetter !== "Backspace") {
-      if (winState.win || input.length === 5) {
-        // If the user has already won or has inputted 5 letters, don't handle the key press
+    if (clickedLetter === "ENTER") {
+      e.preventDefault();
+      handleEnterClick();
+    } else if (clickedLetter !== "BACKSPACE") {
+      if (winState.win) {
         return;
       }
   
-      e.preventDefault(); // Prevent default behavior for non-Enter and non-Backspace keys
-      // Handle other keys
+      e.preventDefault();
+  
       if (typeof clickedLetter === "string" && clickedLetter !== "") {
-        if (input.length % 5 === 0 && enterCount !== rowTest && input.length > 1) {
-          // And enter hasn't been pressed
+        const currentRowIndex = Math.floor((input.length - 1) / 5);// 1
+        // slice (5, 10)???
+        const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
+      
+        console.log(currentRowLetters.length);
+        console.log(enterCount);
+        console.log(rowTest);
+        console.log(clickedLetter);
+        if (currentRowLetters.length === 5 && enterCount !== rowTest && clickedLetter !== "ENTER") {
           return;
-        } else {
-          console.log("Put in more letters... 2");
         }
   
         input.push(clickedLetter.toUpperCase());
@@ -91,34 +116,49 @@ function LetterGrid() {
   useEffect(() => {
     console.log(isModalOpen); // will log true
   }, [isModalOpen]);
-  
+
+  let correctWord = "ABOTT";
+
+
   function handleEnterClick() {
-    const userWon = input.every((letter, index) => letter === "ABOTT"[index % 5]);
+    const currentRowIndex = Math.floor((input.length - 1) / 5);// 1
+    const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
+      
+    console.log("handleEnterClick activates")
+    if (input.length % 5 !== 0 || input.length === 0) {
+      console.log("You need to put in more letters");
+      return;
+    }
+    if (letterGrid.every(char => char !== '')) {
+      console.log("The grid is full. You cannot enter any more letters.");
+      return;
+    }
+    const userWon = input.every((letter, index) => letter === correctWord[index % 5]);
+    console.log(userWon);
     if (userWon) {
-      console.log("Click");
       setWinState((prevState) => ({ ...prevState, win: true }));
       toggleModal(); // Show the modal
     }
+  
     let funcCount = 1;
-  
-    if (input.length % 5 === 0 && input.length > 1 && funcCount != enterCount) {
-      console.log("Success");
-      enterCount++;
-  
-      // Increment the number of guesses
-      setWinState((prevState) => ({ ...prevState, guesses: prevState.guesses + 5 }));
-  
-      // Check if the user has won
-      const userWon = input.every((letter, index) => letter === "ABOTT"[index % 5]);
-      if (userWon) {
-        setWinState((prevState) => ({ ...prevState, win: true }));
-      }
-  
-      decideColors(input, "ABOTT");
-    } else {
-      console.log("Failure");
-      console.log("You need to put in more letters");
+    if (enterCount === 0) {
+      setEnterCount(enterCount + 1);
     }
+
+    console.log(rowTest);
+    console.log(currentRowLetters.includes(''));
+    console.log(enterCount + " enterCount");
+    console.log(Math.round((input.length - 1) / 5));
+    if(!(currentRowLetters.includes('')) && enterCount === (input.length - 1) / 5) {
+      setEnterCount(enterCount + 1);
+    }
+   
+    console.log(enterCount);
+  
+    // Increment the number of guesses
+    setWinState((prevState) => ({ ...prevState, guesses: prevState.guesses + 5 }));
+  
+    decideColors(input, "ABOTT");
   }
 
  
@@ -129,34 +169,43 @@ function LetterGrid() {
   function decideColors(input, correctWord) {
     let newColors = [];
     let correctCount = 0;
-
+  
+    // create a copy of the correct word to track which letters have already been matched
+    let remainingLetters = correctWord.split('');
+  
     for (let i = 0; i < input.length; i++) {
       let letter = input[i];
       let correctIndex = i % correctWord.length;
       let correctLetter = correctWord[correctIndex];
-
+  
       if (letter === correctLetter) {
+        // mark the letter as matched
+        remainingLetters[correctIndex] = null;
         newColors[i] = 'green';
         correctCount++;
-      } else if (correctWord.includes(letter)) {
+      } else if (remainingLetters.includes(letter)) {
+        // mark the letter as matched
+        let index = remainingLetters.indexOf(letter);
+        remainingLetters[index] = null;
         newColors[i] = 'yellow';
       } else {
         newColors[i] = '#444444';
       }
     }
-
+  
     // Check for win condition
     if (correctCount === correctWord.length) {
       setWinState({ win: true, guesses: input.length });
       toggleModal(); // Show the modal
     }
-
+  
     setColors(newColors);
   }
 
 
   useEffect(() => {
-
+    const currentRowIndex = Math.floor((input.length - 1) / 5);// 1
+    const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
     const backspaceHandler = (e) => {
       if (e.key === 'Backspace') handleBackspaceClick();
     };
@@ -174,7 +223,7 @@ function LetterGrid() {
       window.removeEventListener('keydown', backspaceHandler);
       window.removeEventListener('keydown', enterHandler);
     };
-  }, [letterGrid]);
+  }, [letterGrid,enterCount]);
 
   const guessCount = Math.floor(winState.guesses / 5);
 
