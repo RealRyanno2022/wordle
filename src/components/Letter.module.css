@@ -10,7 +10,8 @@
   font-weight: bold;
   font-size: 2vh;
   margin: 0.125vh;
-  background: gray;
+  background: black;
+  border: 5px solid gray;
 }
 
 .letter:not(.empty):hover {

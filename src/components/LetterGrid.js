@@ -298,7 +298,9 @@ function LetterGrid() {
         <Key onClick={() => handleKeyClick('M')}>M</Key>
         <Backspace onClick={handleBackspaceClick} />
       </div>
+      <div className={styles.space}></div>
     </div>
+
     
   );
 
