@@ -140,7 +140,7 @@ function LetterGrid() {
       toggleModal(); // Show the modal
     }
   
-    let funcCount = 1;
+    let funcCount = 1;.
     if (enterCount === 0) {
       setEnterCount(enterCount + 1);
     }
