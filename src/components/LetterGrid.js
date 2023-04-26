@@ -97,33 +97,58 @@ function LetterGrid() {
  
    
   
+  // function decideColors(input, correctWord) {
+  //   let newColors = [];
+  
+  //   for (let i = 0; i < input.length; i++) {
+  //     let letter = input[i];
+  //     let correctLetter = correctWord[i];
+  
+  //     if (letter === correctLetter) {
+  //       newColors[i] = 'green';
+  //     } else if (correctWord.includes(letter)) {
+  //       newColors[i] = 'yellow';
+  //     } else {
+  //       newColors[i] = 'gray';
+  //     }
+  //   }
+  
+  //   console.log(newColors);
+  //   setColors(newColors);
+  // }
+
   function decideColors(input, correctWord) {
     let newColors = [];
-   
-    
   
     for (let i = 0; i < input.length; i++) {
-      const letter = input[i];
-      if (letter === correctWord[i]) {
-        newColors[i] = 'green';   
-    
-      }
-    }
-
-    for (let i = 0; i < input.length; i++) {
-      const letter = input[i];
-      if () {
-
-       
+      let letter = input[i];
+      let correctIndex = i % correctWord.length;
+      let correctLetter = correctWord[correctIndex];
+  
+      console.log(`Iteration ${i + 1}:`);
+      console.log(`  Input letter: ${letter}`);
+      console.log(`  Correct letter: ${correctLetter}`);
+  
+      if (letter === correctLetter) {
+        newColors[i] = 'green';
+        console.log(`  Result: green (correct position)`);
+      } else if (correctWord.includes(letter)) {
+        newColors[i] = 'yellow';
+        console.log(`  Result: yellow (present in correctWord, but incorrect position)`);
       } else {
-        newColors[i] = 'gray';  
+        newColors[i] = 'gray';
+        console.log(`  Result: gray (not present in correctWord)`);
       }
+  
+      console.log(`  newColors so far: ${newColors}`);
     }
-
-    console.log(newColors);
+  
+    console.log("Final newColors:", newColors);
     setColors(newColors);
   }
+  
 
+  
 
 
 
