@@ -8,20 +8,15 @@ import InputModal from './InputModal';
 import ErrorBoundary from './ErrorBoundary';
 function Card() {
   return (
-    <div className={styles.card} style= {{ 
-      height: "1000px"
-      , 
-      overflowY: "scroll"}}>
+    <div className={styles.card}>
         <ErrorBoundary>
  
   
           <Header />
-    
-      
-      <LetterGrid />
+          <Space />
+        <LetterGrid />
 
-        <Space />
-      {/* <Keyboard /> */}
+
       </ErrorBoundary>
     </div>
   )

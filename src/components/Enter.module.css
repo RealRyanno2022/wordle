@@ -1,17 +1,28 @@
 .enter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 18px;
-    border-radius: 10px;
-    margin: 1px;
-    background-color: gray;
-    color: white;
-    cursor: pointer;
-    width: 70px;
-    height: 60px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: helvetica;
+  font-weight: bold;
+  height: 50px;
+  width: 70px;
+  font-size: 14px;
+  border-radius: 10px;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background: gray;
+  color: white;
+  margin: 1px;
+}
+
+
+
+
+
+
+
+
   
   .enter:hover {
     background-color: darkgray;

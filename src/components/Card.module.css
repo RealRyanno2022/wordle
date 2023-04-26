@@ -1,20 +1,7 @@
 .card {
-    /* background: black; */
-    top: 0;
-    bottom:0;
-    right:0;
-    left:0;
-    z-index:9999;
-    /* display: flex; 
-    /justify-content: center; */
-    align-items: center; 
-    transform-origin: center bottom;
-    transition: transform 0.3s ease-in-out; 
-   
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-
-@media (min-width: 768px) {
-    .MyComponent:hover {
-      transform: translateY(-5px) scale(1.2);
-    }
-  }

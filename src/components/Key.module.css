@@ -1,17 +1,23 @@
+
+
+
 .key {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     font-family: helvetica;
     font-weight: bold;
-    font-size: 18px;
+    height: 50px; /* Changed from 7vw to an absolute value */
+    width: 35px; /* Changed from 5vw to an absolute value */
+    font-size: 14px; /* Changed from 2vw to an absolute value */
     border-radius: 10px;
-    margin: 1px;
+    user-select: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
     background: gray;
     color: white;
-    width: 40px;
-    height: 60px;
-}
+    margin: 1px;
+  }
 
 .key:hover {
     background-color: darkgray;

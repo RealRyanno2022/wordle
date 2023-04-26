@@ -1,17 +1,20 @@
-.backspace {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: helvetica;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 10px;
-    margin: 1px;
-    background-color: gray;
-    color: white;
-    width: 60px;
-    height: 60px;
-  }
+.backspace{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: helvetica;
+  font-weight: bold;
+  height: 50px;
+  width: 70px;
+  font-size: 3vw;
+  border-radius: 10px;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background: gray;
+  color: white;
+  margin: 1px;
+}
   
   .backspace:hover {
     background-color: darkgray;
@@ -23,9 +26,7 @@
   }
 
   .image {
-    width: 38px; /* Change the width to 400 pixels */
-    height: 40px; /* Change the height to 300 pixels */
-  
-
+    width: 25px; /* Use relative unit (vw) for width */
+    height: 25px; /* Use relative unit (vw) for height */
     filter: brightness(0%) invert(100%);
   }

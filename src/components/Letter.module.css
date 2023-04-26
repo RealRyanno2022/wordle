@@ -1,22 +1,20 @@
 .letter {
-  height: 60px;
+  height: 5vh;
   display: inline-row;
-  width: 60px;
+  width: 5vh;
   text-align: center;
   align-items: center;
   justify-content: center;
   font-family: helvetica;
   display: flex;
   font-weight: bold;
-  font-size: 28px;
-  border-radius: 10px;
-  margin: 1px;
+  font-size: 2vh;
+  margin: 0.125vh;
   background: gray;
-  transition: all 0.2s ease-in-out; /* Add this transition */
 }
 
 .letter:not(.empty):hover {
-  transform: scale(1.1); /* Add this hover effect */
+  transform: scale(1.1);
 }
 
 .green {
@@ -41,3 +39,13 @@
 .letter.empty {
   transform: scale(0.9);
 }
+
+/* .lettergrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.125vh;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+} */
