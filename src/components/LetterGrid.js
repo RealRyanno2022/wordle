@@ -15,7 +15,7 @@ function LetterGrid() {
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
   const [input, setInput] = useState([]);
   const [colors, setColors] = useState(Array(6).fill("gray"));
-  let [newColors, setNewColors] = useState([]);
+  // let [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
 
   const [winState, setWinState] = useState({ win: false, guesses: 0 });
@@ -74,9 +74,7 @@ function LetterGrid() {
     setBackspacePressed(true);
   }
   
-  function handleBackspaceRelease() {
-    setBackspacePressed(false);
-  }
+ 
   
   function handleKeyPress(e) {
     const clickedLetter = e.key.toUpperCase();
@@ -139,7 +137,7 @@ function LetterGrid() {
       toggleModal(); // Show the modal
     }
   
-    let funcCount = 1;
+    // let funcCount = 1;
     if (enterCount === 0) {
       setEnterCount(enterCount + 1);
     }
@@ -207,10 +205,11 @@ function LetterGrid() {
     setColors(newColors);
   }
 
+ 
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const currentRowIndex = Math.floor((input.length - 1) / 5);// 1
-    const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
+
     const backspaceHandler = (e) => {
       if (e.key === 'Backspace') handleBackspaceClick();
     };

@@ -13,12 +13,12 @@ const HeaderModal = (props) => {
   
     const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (props.stackClicked || props.contactClicked || props.featureClicked) {
+    useEffect(() => {
+      if (props.stackClicked || props.contactClicked || props.featuresClicked) {
         console.log("pop");
-      openHeaderModal();
-    }
-  }, [props.stackClicked, props.contactClicked, props.featureClicked]);
+        openHeaderModal();
+      }
+    }, [props.stackClicked, props.contactClicked, props.featuresClicked]);
 
   const openHeaderModal = () => {
     setIsOpen(true);

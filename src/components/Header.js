@@ -8,11 +8,13 @@ function Header() {
   let [isFeaturesClicked, setIsFeaturesClicked] = useState(false);
   let [isContactClicked, setIsContactClicked] = useState(false);
 
-  const { isModalShown, setIsModalShown } = useContext(HeaderModalContext);
+  const { isModalShown, 
+    // setIsModalShown 
+  } = useContext(HeaderModalContext);
 
-  const handleClick = () => {
-    setIsModalShown(true);
-  };
+  // const handleClick = () => {
+  //   setIsModalShown(true);
+  // };
 
   function stackClickHandler() {
     console.log("Stack clicked");
@@ -39,7 +41,7 @@ function Header() {
         <h1 className={styles.h1}>Wurdle</h1>
       </div>
       <div>
-      <button onClick={handleClick}>openModal</button>
+      {/* <button onClick={handleClick}>openModal</button> */}
       {isModalShown && <HeaderModal />}
       </div>
         
@@ -52,7 +54,7 @@ function Header() {
         <div className={styles.header__links}>
           <div onClick={contactClickHandler}>Contact</div>
         </div>
-        <button onClick={handleClick}>Click me</button>
+        {/* <button onClick={handleClick}>Click me</button> */}
         <HeaderModal  stackClicked={isStackClicked} contactClicked={isContactClicked} featuresClicked={isFeaturesClicked} />
     </header>
   );
