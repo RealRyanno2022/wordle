@@ -1,16 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import HeaderModal from './HeaderModal';
 import styles from './Header.module.css';
-import { HeaderModalContext } from './Card';
 
-function Header() {
+
+function Header(props) {
   let [isStackClicked, setIsStackClicked] = useState(false);
   let [isFeaturesClicked, setIsFeaturesClicked] = useState(false);
   let [isContactClicked, setIsContactClicked] = useState(false);
 
-  const { isModalShown, 
-    // setIsModalShown 
-  } = useContext(HeaderModalContext);
 
 
   function stackClickHandler() {
@@ -40,15 +37,14 @@ function Header() {
      
         
         <div className={styles.header__links}>
-          <div onClick={featuresClickHandler}>Features</div>
+          <div onClick={props.featuresClickHandler}>Features</div>
         </div>
         <div className={styles.header__links}>
-          <div onClick={stackClickHandler}>Stack</div>
+          <div onClick={props.stackClickHandler}>Stack</div>
         </div>
         <div className={styles.header__links}>
-          <div onClick={contactClickHandler}>Contact</div>
+          <div onClick={props.contactClickHandler}>Contact</div>
         </div>
-        {/* <button onClick={handleClick}>Click me</button> */}
     </header>
   );
 }

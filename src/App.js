@@ -1,12 +1,10 @@
 
 import './App.css';
-import Card from './components/Card';
+import ErrorEnforcer from './components/ErrorEnforcer';
 function App() {
   return (
     <div className="App">
-      <Card>
-  
-      </Card>
+      <ErrorEnforcer />
     </div>
   );
 }

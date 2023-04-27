@@ -1,42 +1,54 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './HeaderModal.module.css';
-import LetterGrid from './LetterGrid';
-import { HeaderModalContext } from './Card';
 
 const HeaderModal = (props) => {
-  
-  const { isModalShown } = useContext(HeaderModalContext);
-  
-  
-  
-  
-  
-    const [isOpen, setIsOpen] = useState(false);
+  let [headerModalMessage, setHeaderModalMessage] = useState('Developed by Daniel Ryan, 2023');
+  const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-      if (props.stackClicked || props.contactClicked || props.featuresClicked) {
-        console.log("pop");
-        openHeaderModal();
+  useEffect(() => {
+    if (props.isStackClicked || props.isContactClicked || props.isFeatureClicked) {
+      console.log('pop');
+      openHeaderModal();
+    }
+    if (props.isStackClicked) {
+      setHeaderModalMessage('I built this using React.');
+    }
+    if (props.isContactClicked) {
+      setHeaderModalMessage('Contact me');
+    }
+    if (props.isFeatureClicked) {
+      setHeaderModalMessage(
+        'Features word authentication, 2000 word dictionary, physical and on-screen keyboard',
+      );
+    } else {
+      if (isOpen) {
+        setHeaderModalMessage(
+          "Developed by Daniel Ryan, 2023"
+        );
       }
-    }, [props.stackClicked, props.contactClicked, props.featuresClicked]);
+    }
+
+
+  }, [props.isStackClicked, props.isContactClicked, props.isFeatureClicked]);
 
   const openHeaderModal = () => {
     setIsOpen(true);
+    console.log('open');
   };
 
   const closeHeaderModal = () => {
     setIsOpen(false);
+    console.log('closed');
   };
 
-  const headerModalClassName = `${styles.header_modal} ${isOpen ? styles.header_modal_closed : styles.header_modal_open}`;
+  const headerModalClassName = isOpen ? styles.header_modal_open : styles.header_modal_closed;
 
   return (
     <div>
       <button onClick={openHeaderModal}>Open HeaderModal</button>
-      <div className={headerModalClassName}>
-        <div>Hello there</div>
-        <button onClick={closeHeaderModal}>Close HeaderModal</button>
->
+      <button onClick={closeHeaderModal}>Close HeaderModal</button>
+      <div className={`${styles.header_modal} ${headerModalClassName}`}>
+        <div className={styles.header_modal_message}>{headerModalMessage}</div>
       </div>
     </div>
   );

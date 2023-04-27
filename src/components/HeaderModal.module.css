@@ -1,51 +1,35 @@
 .header_modal {
-    background-color: darkgray;
-    height: 150px;
-    width: 500px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position:relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-    z-index:-1
-  }
+  background-color: darkgray;
+  height: 150px;
+  width: 500px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  z-index: 10;
+  opacity: 1;
+}
 
-  @keyframes fadeInDown {
-    from {
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeOutUp {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-  }
-  
-  .header_modal_open {
-    visibility: visible;
-    opacity: 1;
-    animation: fadeInDown 0.3s ease-out forwards;
-  }
-  
-  .header_modal_closed {
-    animation: fadeOutUp 0.3s ease-out forwards;
-  }
+.header_modal_message {
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+.header_modal_open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.header_modal_closed {
+  opacity: 0;
+  visibility: hidden;
+}

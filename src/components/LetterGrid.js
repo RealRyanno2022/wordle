@@ -4,8 +4,7 @@ import Letter from './Letter';
 import Key from './Key';
 import Enter from './Enter';
 import Backspace from './Backspace';
-import InputModal from './InputModal';
-// import HeaderModal from './HeaderModal';
+// import InputModal from './InputModal';
 
 
 
@@ -263,7 +262,7 @@ function LetterGrid() {
 
   return (
     <div>
-       <InputModal letterGrid={letterGrid} winState={winState} guessCount={guessCount} toggleModal={toggleModal} isOpen={isModalOpen} />
+       {/* <InputModal letterGrid={letterGrid} winState={winState} guessCount={guessCount} toggleModal={toggleModal} isOpen={isModalOpen} /> */}
 
 
       {[...Array(6)].map((_, row) => (
@@ -281,7 +280,6 @@ function LetterGrid() {
           })}
         </div>
       ))}
-      {/* <HeaderModal /> */}
       <div className={styles.keyboard}>
         {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter) => (
           <Key key={letter} onClick={() => handleKeyClick(letter)}>
