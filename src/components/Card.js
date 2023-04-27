@@ -8,7 +8,7 @@ import ErrorBoundary from './ErrorBoundary';
 
 export const HeaderModalContext = React.createContext();
 
-function Card({ onButtonClick }) {
+function Card() {
   const [value, setValue] = useState(null);
   
   const { isModalShown, setIsModalShown } = useState(false);

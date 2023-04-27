@@ -12,9 +12,6 @@ function Header() {
     // setIsModalShown 
   } = useContext(HeaderModalContext);
 
-  // const handleClick = () => {
-  //   setIsModalShown(true);
-  // };
 
   function stackClickHandler() {
     console.log("Stack clicked");
@@ -40,10 +37,7 @@ function Header() {
       <div className={styles.header__logo}>
         <h1 className={styles.h1}>Wurdle</h1>
       </div>
-      <div>
-      {/* <button onClick={handleClick}>openModal</button> */}
-      {isModalShown && <HeaderModal />}
-      </div>
+     
         
         <div className={styles.header__links}>
           <div onClick={featuresClickHandler}>Features</div>
@@ -55,7 +49,6 @@ function Header() {
           <div onClick={contactClickHandler}>Contact</div>
         </div>
         {/* <button onClick={handleClick}>Click me</button> */}
-        <HeaderModal  stackClicked={isStackClicked} contactClicked={isContactClicked} featuresClicked={isFeaturesClicked} />
     </header>
   );
 }

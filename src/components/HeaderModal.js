@@ -36,7 +36,7 @@ const HeaderModal = (props) => {
       <div className={headerModalClassName}>
         <div>Hello there</div>
         <button onClick={closeHeaderModal}>Close HeaderModal</button>
-        <LetterGrid isModalShown={isModalShown} />
+>
       </div>
     </div>
   );
