@@ -6,29 +6,18 @@ const HeaderModal = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (props.isStackClicked || props.isContactClicked || props.isFeatureClicked) {
-      console.log('pop');
-      openHeaderModal();
-    }
     if (props.isStackClicked) {
       setHeaderModalMessage('I built this using React.');
-    }
-    if (props.isContactClicked) {
+      openHeaderModal();
+    } else if (props.isContactClicked) {
       setHeaderModalMessage('Contact me');
-    }
-    if (props.isFeatureClicked) {
+      openHeaderModal();
+    } else if (props.isFeatureClicked) {
       setHeaderModalMessage(
         'Features word authentication, 2000 word dictionary, physical and on-screen keyboard',
       );
-    } else {
-      if (isOpen) {
-        setHeaderModalMessage(
-          "Developed by Daniel Ryan, 2023"
-        );
-      }
+      openHeaderModal();
     }
-
-
   }, [props.isStackClicked, props.isContactClicked, props.isFeatureClicked]);
 
   const openHeaderModal = () => {
@@ -48,7 +37,10 @@ const HeaderModal = (props) => {
       <button onClick={openHeaderModal}>Open HeaderModal</button>
       <button onClick={closeHeaderModal}>Close HeaderModal</button>
       <div className={`${styles.header_modal} ${headerModalClassName}`}>
-        <div className={styles.header_modal_message}>{headerModalMessage}</div>
+        <div className={styles.header_modal_inner}>
+          <div className={styles.header_modal_message}>{headerModalMessage}</div>
+          <div onClick={closeHeaderModal} className={styles.header_modal_button}>OK</div>
+        </div>
       </div>
     </div>
   );

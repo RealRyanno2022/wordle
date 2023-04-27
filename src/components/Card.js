@@ -15,24 +15,30 @@ function Card() {
     setValue(newValue);
   };
 
+  const stackClickHandler = () => {
+    setIsStackClicked((prev) => !prev);
+  };
+
+  const featuresClickHandler = () => {
+    setIsFeaturesClicked((prev) => !prev);
+  };
+
+  const contactClickHandler = () => {
+    setIsContactClicked((prev) => !prev);
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.overlay}>
         <Header
-          isStackClicked={isStackClicked}
-          isFeaturesClicked={isFeaturesClicked}
-          isContactClicked={isContactClicked}
-          setIsStackClicked={setIsStackClicked}
-          setIsFeaturesClicked={setIsFeaturesClicked}
-          setIsContactClicked={setIsContactClicked}
+          stackClickHandler={stackClickHandler}
+          featuresClickHandler={featuresClickHandler}
+          contactClickHandler={contactClickHandler}
         />
         <HeaderModal
           isStackClicked={isStackClicked}
           isFeatureClicked={isFeaturesClicked}
           isContactClicked={isContactClicked}
-          setIsStackClicked={setIsStackClicked}
-          setIsFeatureClicked={setIsFeaturesClicked}
-          setIsContactClicked={setIsContactClicked}
         />
         <Space />
         <LetterGrid />
