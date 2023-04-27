@@ -7,6 +7,7 @@
   width: 100%;
   background-color:  #f8f8f8;
   color: black;
+  cursor: pointer;
 }
   
 
@@ -23,11 +24,15 @@
     text-decoration: none;
     transition: color 0.3s ease-in-out;
     font-size: 6vh;
+    cursor: pointer;
   }
+
+
   
   .header__links:hover {
-    color: #555;
+    background-color: darkgray;
   }
+
   
   .header__links:last-child {
     margin-right: 0;
