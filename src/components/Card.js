@@ -3,7 +3,7 @@ import styles from './Card.module.css';
 import Header from './Header';
 import LetterGrid from './LetterGrid';
 import Space from './Space';
-import InfoModal from './InfoModal';
+import InfoModal from './InfoModal.js';
 import StartModal from './StartModal';
 import EndModal from './EndModal';
 

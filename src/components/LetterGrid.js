@@ -4,12 +4,13 @@ import Letter from './Letter';
 import Key from './Key';
 import Enter from './Enter';
 import Backspace from './Backspace';
-// import InputModal from './InputModal';
+import EndModal from './EndModal';
+import keyStyles from './Key.module.css';
 
 // ~~PRIORITY~~
 
 // HIGH
-// Add a modal when you start, run out of letters or get the correct answer
+// Add a EndModal when you start, run out of letters or get the correct answer
 // Fix the keyboard so that the letters change color depending on their board state
 // Add a global lettergridColor useState which originally makes all of the letter components have a style like 
 // .gray {
@@ -37,13 +38,14 @@ function LetterGrid() {
   let [currentRow,setCurrentRow] = useState([]);
   // let [newColors, setNewColors] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
+  let[keyboardStyles, setKeyboardStyles] = useState(Array(26).fill('gray'));
 
   let [letterGridColors, setLetterGridColors] = useState(Array(30).fill(''));
 
 
 
   const [winState, setWinState] = useState({ win: false, guesses: 0 });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEndModalOpen, setIsEndModalOpen] = useState(false);
   let [backspacePressed, setBackspacePressed] = useState(false);
   let [rowTest, setRowTest] = useState(1);
   console.log(winState.win);
@@ -254,12 +256,7 @@ function LetterGrid() {
     }
   }
   
-  function toggleModal() {
-    setIsModalOpen(true);
-    if(isModalOpen) {
-      setIsModalOpen(false);
-    }
-  }
+ 
 
   useEffect(() => { 
     if(input.length % 5 === 0 && currentRow.length === 0) {
@@ -268,9 +265,7 @@ function LetterGrid() {
     }
   }, []);
   
-  useEffect(() => {
-    console.log(isModalOpen); // will log true
-  }, [isModalOpen]);
+  
 
   let correctWord = "ABOTT";
 
@@ -290,7 +285,12 @@ function LetterGrid() {
     const userWon = input.every((letter, index) => letter === correctWord[index % 5]);
     if (userWon) {
       setWinState((prevState) => ({ ...prevState, win: true }));
-      setIsModalOpen(true);
+      setIsEndModalOpen(true);
+    }
+
+    if(input.length === 30 && enterCount === 6 && !userWon) {
+      setWinState((prevState) => ({ ...prevState, win: false }));
+      setIsEndModalOpen(true);
     }
   
     if (!(currentRowLetters.includes('')) 
@@ -343,11 +343,28 @@ function LetterGrid() {
     // Check for win condition
     if (correctCount === correctWord.length) {
       setWinState({ win: true, guesses: input.length });
-      toggleModal(); // Show the modal
+      toggleEndModal(); // Show the EndModal
     }
+
+    // The keyboard looks at the newColors and applies the appropriate styles
+    // [black,black,black,black,black]
+    // Look at the last five elements of Input. Look at newColors. Match the element to the color.
+    const currentRowIndex = Math.floor((input.length - 1) / 5); // 1
+    let keysAffected = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
+    console.log(keysAffected);
+
+    
+
+
+
   
     setColors(newColors);
+    console.log(newColors);
   }
+
+  const toggleEndModal = () => {
+    setIsEndModalOpen((prevIsEndModalOpen) => !prevIsEndModalOpen);
+  };
 
  
 
@@ -379,9 +396,6 @@ function LetterGrid() {
 
   return (
     <div>
-       {/* <InputModal letterGrid={letterGrid} winState={winState} guessCount={guessCount} toggleModal={toggleModal} isOpen={isModalOpen} /> */}
-
-
       {[...Array(6)].map((_, row) => (
         <div className={styles.lettergrid}  key={row}>
           {[...Array(5)].map((_, col) => {
@@ -415,7 +429,9 @@ function LetterGrid() {
       </div>
       <div className={styles.keyboard}>
         <Enter onClick={() => {}}>ENTER</Enter>
-        <Key onClick={() => handleKeyClick('Z')}>Z</Key>
+        {/* When a key is found to be in the word in the correct place, turn green. If 
+        in the word but the wrong place, turn yellow. Else, turn black.  */}
+        <Key className={keyStyles.green} onClick={() => handleKeyClick('Z')}>Z</Key>
         <Key onClick={() => handleKeyClick('X')}>X</Key>
         <Key onClick={() => handleKeyClick('C')}>C</Key>
         <Key onClick={() => handleKeyClick('V')}>V</Key>
@@ -425,6 +441,11 @@ function LetterGrid() {
         <Backspace onClick={handleBackspaceClick} />
       </div>
       <div className={styles.space}></div>
+      <EndModal
+        isOpen={isEndModalOpen}
+        setIsOpen={setIsEndModalOpen}
+        toggleEndModal={toggleEndModal}
+      />
     </div>
 
     
