@@ -1,4 +1,4 @@
-.header_modal {
+.info_modal {
   background-color: darkgray;
   height: 150px;
   width: 500px;
@@ -18,7 +18,7 @@
   opacity: 1;
 }
 
-.header_modal_message {
+.info_modal_message {
   font-weight: bold;
   text-align: center;
   margin-top: 20px;
@@ -26,12 +26,12 @@
   margin-left: 50px;
 }
 
-.header_modal_open {
+.info_modal_open {
   opacity: 1;
   visibility: visible;
 }
 
-.header_modal_button {
+.info_modal_button {
   border-radius: 5px;
   height: 50px;
   width: 100px;
@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 
-.header_modal_closed {
+.info_modal_closed {
   opacity: 0;
   visibility: hidden;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import HeaderModal from './HeaderModal';
+import InfoModal from './InfoModal';
 import styles from './Header.module.css';
 
 

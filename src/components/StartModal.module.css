@@ -1,0 +1,51 @@
+.starter_modal {
+    background-color: darkgray;
+    height: 600px;
+    width: 500px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    transition: opacity 0.starter_3s ease-out, visibility 0.starter_3s ease-out;
+    z-index: 50;
+    opacity: 1;
+  }
+  
+  .starter_modal_message {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
+  }
+  
+  .starter_modal_open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .starter_modal_button {
+    border-radius: 5px;
+    height: 50px;
+    width: 100px;
+    background-color: brown;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .starter_modal_closed {
+    opacity: 0;
+    visibility: hidden;
+  }

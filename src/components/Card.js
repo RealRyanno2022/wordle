@@ -3,7 +3,9 @@ import styles from './Card.module.css';
 import Header from './Header';
 import LetterGrid from './LetterGrid';
 import Space from './Space';
-import HeaderModal from './HeaderModal';
+import InfoModal from './InfoModal';
+import StartModal from './StartModal';
+import EndModal from './EndModal';
 
 function Card() {
   const [value, setValue] = useState(null);
@@ -35,11 +37,13 @@ function Card() {
           featuresClickHandler={featuresClickHandler}
           contactClickHandler={contactClickHandler}
         />
-        <HeaderModal
+        <InfoModal
           isStackClicked={isStackClicked}
           isFeatureClicked={isFeaturesClicked}
           isContactClicked={isContactClicked}
         />
+        <StartModal />
+        <EndModal />
         <Space />
         <LetterGrid />
       </div>

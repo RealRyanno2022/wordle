@@ -9,13 +9,10 @@
   display: flex;
   font-weight: bold;
   font-size: 2vh;
-  margin: 0.125vh;
+  margin: 0.1vh;
   background: gray;
 }
 
-.letter:not(.empty):hover {
-  transform: scale(1.1);
-}
 
 .green {
   background-color: green;
@@ -30,7 +27,8 @@
 }
 
 .gray {
-  background-color: gray;
+  background-color: rgba(0,0,0,0);
+  border: 2px solid gray;
 }
 
 .letter:not(.empty) {
@@ -43,4 +41,24 @@
 @font-face {
   font-family: 'HelveticaNeue';
   src: url('../../public/fonts/HelveticaNeue.otf');
+}
+
+@keyframes flip {
+  0% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    background: white;
+    transform: scaleY(0);
+  }
+
+  100% {
+    transform: scaleY(1);
+    background: green;
+  }
+}
+
+.flip {
+  animation: flip 500ms ease forwards;
 }

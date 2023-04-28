@@ -1,7 +1,15 @@
 import styles from './Letter.module.css';
+import React, { useEffect } from 'react';
+function Letter({ boxValue, colors, letterGridColors, ...props }) {
+  
+  useEffect(() => {
+    console.log(colors)
+  },[]);
+  
 
-function Letter({ boxValue, colors, ...props }) {
   return (
+
+   
     <div>
       <div className={styles.letter}
       {...props} 
@@ -10,3 +18,4 @@ function Letter({ boxValue, colors, ...props }) {
   );
 }
 export default Letter;
+
