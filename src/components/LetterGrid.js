@@ -35,10 +35,23 @@ function LetterGrid() {
   const [colors, setColors] = useState(Array(6).fill("gray"));
   let [currentRow,setCurrentRow] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
-  let[keyboardStyles, setKeyboardStyles] = useState(Array(26).fill('gray'));
-  let[newKeyboardStyles, setNewKeyboardStyles] = useState(Array(26).fill('gray'));
+  let[keyboardStyles, setKeyboardStyles] = useState(() => {
+    const initialState = {};
+    for (let i = 0; i < 26; i++) {
+      initialState[String.fromCharCode(65 + i)] = 'gray';
+    }
+    return initialState;
+  });
+  let[newKeyboardStyles, setNewKeyboardStyles] = useState(() => {
+    const initialState = {};
+    for (let i = 0; i < 26; i++) {
+      initialState[String.fromCharCode(65 + i)] = 'gray';
+    }
+    return initialState;
+  });
   let [invalidWord, setInvalidWord] = useState(false);
-  let [validInputSize, setInvalidInputSize] = useState(false);
+  let [invalidInputSize, setInvalidInputSize] = useState(false);
+  const [key, setKey] = useState(0);
 
 
 
@@ -47,7 +60,6 @@ function LetterGrid() {
   const [isEndModalOpen, setIsEndModalOpen] = useState(false);
   let [backspacePressed, setBackspacePressed] = useState(false);
   let [rowTest, setRowTest] = useState(1);
-  console.log(winState.win);
 
   function validWordChecker() {
     const word = currentRow.join("");
@@ -55,8 +67,23 @@ function LetterGrid() {
     if(!(WORDS.includes(word))) {
       setInvalidWord(true);
       setCurrentRow([]);
-    } 
+    } else {
+      setInvalidWord(false);
+    }
   }
+
+  function invalidInputSizeChecker() {
+    if(currentRow.length < 4) {
+      setInvalidInputSize(true);
+    } else {
+      setInvalidInputSize(false);
+    }
+  }
+
+  useEffect(() => {
+    const defaultStyles = new Array(26).fill('#444444');
+    setKeyboardStyles(defaultStyles);
+  }, []);
 
 
 
@@ -92,10 +119,9 @@ function LetterGrid() {
   }
   
   function handleBackspaceClick() {
-    const inputIndex = input.length - 1;  
+    const inputIndex = input.length - 1;
     
-    if(input.length % 5 === 0 && (input.length / 5 === enterCount)) {
-      console.log("Trigger");
+    if (input.length % 5 === 0 && (input.length / 5 === enterCount)) {
       return;
     }
   
@@ -104,117 +130,81 @@ function LetterGrid() {
     setInput(input.slice(0, -1));
     newLetterGrid[lastLetterIndex] = "";
     setLetterGrid(newLetterGrid);
-    console.log(inputIndex);
-
-    console.log(input.length + " input.length");
-    console.log(Math.floor((input.length % 6)) + " input.length %  6")
-    console.log(currentRow.length + " currentRow.length");
-    console.log(enterCount + " enterCount");
-    console.log(rowTest + " rowTest");
   }
   
-
- 
-
-  
-  
- 
-  
   function handleKeyPress(e) {
-    const bannedLetters = [
-        "#","[","]", ".", "/", "${\}", "(", ")", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "!", "?", "<", ">", "{", "}", "-", "_", "+", "=", "£", "$", "%", "^", "&", "*", "`", "¬", "  ", " ", "|", "~",
+    const bannedLetters = ["ARROWUP","ARROWDOWN","ARROWRIGHT","ARROWLEFT","SHIFT","CONTROL","ALT","DELETE","HOME","PAGEUP","PAGEDOWN","END","OS","ALTGRAPH","ESCAPE",
+      "#", "[", "]", ".", "/", "${\}", "(", ")", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "!", "?", "<", ">", "{", "}", "-", "_", "+", "=", "£", "$", "%", "^", "&", "*", "`", "¬", "  ", " ", "|", "~",
     ];
-
+  
     let clickedLetter = e.key.toUpperCase();
     console.log(clickedLetter);
-
-    // Check if clickedLetter is in bannedLetters and return if it is
+  
     if (bannedLetters.includes(clickedLetter)) {
-        return;
+      return;
     }
-
+  
     if (clickedLetter === "ENTER") {
-        return;
+      return;
     }
-
+  
     if (clickedLetter === "BACKSPACE") {
-        e.preventDefault();
-        handleBackspaceClick();
+      e.preventDefault();
+      handleBackspaceClick();
     } else {
-        if (winState.win) {
-            return;
+      if (winState.win) {
+        return;
+      }
+  
+      e.preventDefault();
+  
+      if (typeof clickedLetter === "string" && clickedLetter !== "") {
+        const currentRowLength = input.length - enterCount * 5;
+        if (currentRowLength <= 4) {
+          setInput([...input, clickedLetter.toUpperCase()]);
+  
+          const emptyIndex = letterGrid.indexOf("");
+          if (emptyIndex !== -1) {
+            const newLetterGrid = [...letterGrid];
+            newLetterGrid[emptyIndex] = clickedLetter;
+            setLetterGrid(newLetterGrid);
+          }
         }
-
-        e.preventDefault();
-
-        if (typeof clickedLetter === "string" && clickedLetter !== "") {
-            // Check if the current row is full before adding a new letter
-            const currentRowIndex = Math.floor(input.length / 5);
-            const currentRow = input.slice(
-                currentRowIndex * 5,
-                (currentRowIndex + 1) * 5
-            );
-            console.log(currentRow.length);
-            console.log(input.length % 5 + " input.length % 5");
-            console.log(enterCount);
-            console.log(currentRowIndex + " currentRowIndex");
-            console.log(currentRow + " currentRow");
-            console.log(currentRow.length + " currentRow.length");
-
-            const currentRowLength = input.length - enterCount * 5;
-            console.log(currentRowLength);
-            if (currentRowLength <= 4) {
-                setInput([...input, clickedLetter.toUpperCase()]);
-
-                const emptyIndex = letterGrid.indexOf("");
-                if (emptyIndex !== -1) {
-                    const newLetterGrid = [...letterGrid];
-                    newLetterGrid[emptyIndex] = clickedLetter;
-                    setLetterGrid(newLetterGrid);
-                    console.log(input.length + " input.length");
-                    console.log(Math.floor(input.length / 5) + " input.length / 5");
-                    console.log(currentRow.length + " currentRow.length");
-                    console.log(enterCount + " enterCount");
-                    console.log(rowTest + " rowTest");
-                }
-            }
-        }
+      }
     }
-}
+  }
   
   
  
 
-  useEffect(() => { 
-    if(input.length % 5 === 0 && currentRow.length === 0) {
-      setRowTest(enterCount + 1);
-      console.log(rowTest + " rowTest (useEffect")
-    }
-  }, []);
+
   
   
 
   let correctWord = "ABOTT";
 
+  useEffect(() => {
+    if (input.length % 5 === 0 && input.length > 0 && key > 0) {
+      decideColors(input, correctWord);
+    }
+  }, [key]);
 
   function handleEnterClick() {
-
     validWordChecker();
-    if(invalidWord === true) {
+    invalidInputSizeChecker();
+    if (invalidWord === true) {
       return;
     }
-
-
+  
     const currentRowIndex = Math.floor((input.length - 1) / 5);
     const currentRowLetters = input.slice(currentRowIndex * 5, (currentRowIndex + 1) * 5);
     const currentRowLength = input.length - enterCount * 5;
-
+  
     console.log(currentRow);
     if (currentRowLength < 4) {
       setInvalidInputSize(true);
       return;
     }
-
   
     if (input.length % 5 !== 0 || input.length === 0) {
       return;
@@ -230,36 +220,18 @@ function LetterGrid() {
       setIsEndModalOpen(true);
     }
   
-    if(input.length === 30 && enterCount === 6 && !userWon) {
+    if (input.length === 30 && enterCount === 6 && !userWon) {
       setWinState((prevState) => ({ ...prevState, win: false }));
       setIsEndModalOpen(true);
     }
   
     if (!(currentRowLetters.includes(''))) {
-      setEnterCount(prevEnterCount => prevEnterCount + 1);
+      setEnterCount((prevEnterCount) => prevEnterCount + 1);
+      setKey((prevKey) => prevKey + 1); // Increment the key value
     }
   
     setWinState((prevState) => ({ ...prevState, guesses: prevState.guesses + 5 }));
-  
-    // Call decideColors when the last row is filled with characters
-    if (input.length === 30) {
-      decideColors(input, correctWord);
-    }
-
-    setWinState((prevState) => ({ ...prevState, guesses: prevState.guesses + 5 }));
-  
-    decideColors(input, correctWord);
   }
-
-  
-    
-  
-  
-
- 
-   
-  
-
 
   function decideColors(input, correctWord) {
     let newColors = [];
@@ -330,32 +302,19 @@ function LetterGrid() {
   };
 
  
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const backspaceHandler = (e) => {
-      if (e.key === 'Backspace') handleBackspaceClick();
-    };
-  
-    const enterHandler = (e) => {
-      if (e.key === 'Enter') handleEnterClick();
-    };
-  
-    window.addEventListener('keypress', handleKeyPress);
-    window.addEventListener('keydown', backspaceHandler);
-    window.addEventListener('keydown', enterHandler);
-  
+    function onKeyPress(e) {
+      handleKeyPress(e);
+    }
+
+    window.addEventListener("keydown", onKeyPress);
+
     return () => {
-      window.removeEventListener('keypress', handleKeyPress);
-      window.removeEventListener('keydown', backspaceHandler);
-      window.removeEventListener('keydown', enterHandler);
+      window.removeEventListener("keydown", onKeyPress);
     };
-  }, [letterGrid, enterCount]);
+  }, [input, letterGrid, winState]);
 
-  const guessCount = Math.floor(winState.guesses / 5);
-
-  console.log(colors);
-  console.log(newKeyboardStyles[10]);
 
 
   return (
@@ -390,17 +349,23 @@ function LetterGrid() {
       ))}
       <Space />
       <div className={styles.keyboard}>
-        {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter,index) => (
-          <Key key={letter} onClick={() => handleKeyClick(letter)}
-            className={`${keyStyles[newKeyboardStyles[index]]} ${styles.key}`}>
+        {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter, index) => (
+          <Key
+            key={letter}
+            onClick={() => handleKeyClick(letter)}
+            className={`${keyStyles[newKeyboardStyles[letter]]} ${styles.key}`}
+          >
             {letter}
           </Key>
         ))}
       </div>
       <div className={styles.keyboard}>
-        {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter,index) => (
-          <Key key={letter} onClick={() => handleKeyClick(letter)}
-            className={`${keyStyles[newKeyboardStyles[index+10]]} ${styles.key}`}>
+        {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((letter, index) => (
+          <Key
+            key={letter}
+            onClick={() => handleKeyClick(letter)}
+            className={`${keyStyles[newKeyboardStyles[letter]]} ${styles.key}`}
+          >
             {letter}
           </Key>
         ))}
@@ -413,8 +378,8 @@ function LetterGrid() {
           <Key
             key={letter}
             onClick={() => handleKeyClick(letter)}
-            className={`${keyStyles[newKeyboardStyles[index+19]]} ${styles.key}`}>
-          
+            className={`${keyStyles[newKeyboardStyles[letter]]} ${styles.key}`}
+          >
             {letter}
           </Key>
         ))}
@@ -423,8 +388,6 @@ function LetterGrid() {
       <div className={styles.space}></div>
       <EndModal isOpen={isEndModalOpen} winState={winState} toggleEndModal={toggleEndModal} />
     </div>
-
-    
   );
 
 }
