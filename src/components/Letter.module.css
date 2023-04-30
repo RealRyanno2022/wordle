@@ -35,17 +35,17 @@
 
 .green .innerLetter {
   background-color: green;
-  animation: flip 0.5s ease forwards;
+  animation: flip 1s ease forwards;
 }
 
 .yellow .innerLetter {
   background-color: yellow;
-  animation: flip 0.5s ease forwards;
+  animation: flip 1s ease forwards;
 }
 
 .black .innerLetter {
   background-color: #444444;
-  animation: flip 0.5s ease forwards;
+  animation: flip 1s ease forwards;
 }
 
 .gray .innerLetter {

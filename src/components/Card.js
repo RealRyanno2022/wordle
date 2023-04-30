@@ -9,6 +9,8 @@ import EndModal from './EndModal';
 
 function Card() {
   const [value, setValue] = useState(null);
+  const [letterGrid, setLetterGrid] = useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
+
   let [isStackClicked, setIsStackClicked] = useState(false);
   let [isFeaturesClicked, setIsFeaturesClicked] = useState(false);
   let [isContactClicked, setIsContactClicked] = useState(false);
@@ -42,10 +44,14 @@ function Card() {
           isFeatureClicked={isFeaturesClicked}
           isContactClicked={isContactClicked}
         />
-        <StartModal />
+        <StartModal
+          letterGrid={letterGrid}
+        />
         <EndModal />
         <Space />
-        <LetterGrid />
+        <LetterGrid
+          letterGrid={letterGrid}
+        />
       </div>
     </div>
   );

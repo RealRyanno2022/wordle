@@ -21,9 +21,8 @@
   .starter_modal_message {
     font-weight: bold;
     text-align: center;
-    margin-top: 20px;
-    margin-right: 50px;
-    margin-left: 50px;
+    margin: 20px 100px;
+    line-height: 1.2em;
   }
   
   .starter_modal_open {
@@ -49,3 +48,18 @@
     opacity: 0;
     visibility: hidden;
   }
+
+  .green,
+.yellow,
+.black,
+.gray,
+.lettergrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.125vh; /* Change gap to match the margin of .letter */
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1;
+}
