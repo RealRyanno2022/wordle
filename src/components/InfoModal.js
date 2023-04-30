@@ -6,25 +6,23 @@ const InfoModal = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (props.isStackClicked) {
-      setInfoModalMessage('I built this using React.');
-      openInfoModal();
-    } else if (props.isContactClicked) {
-      setInfoModalMessage('Contact me');
-      openInfoModal();
-    } else if (props.isFeatureClicked) {
-      setInfoModalMessage(
-        'Features word authentication, 2000 word dictionary, physical and on-screen keyboard',
-      );
-      openInfoModal();
+
+    switch(props.clickedButton) {
+      case 'stack':
+        setInfoModalMessage('I built this using React.');
+        openInfoModal();
+        break;
+      case 'contact':
+        setInfoModalMessage('Contact me');
+        openInfoModal();
+        break;
+      case 'feature':
+        setInfoModalMessage('Features word authentication, 2000 word dictionary, physical and on-screen keyboard');
+        openInfoModal();
+        break;
     }
-  }, [props.isStackClicked, props.isContactClicked, props.isFeatureClicked]);
 
-
-
-
-
-
+  }, [props.clickedButton]);
 
   const openInfoModal = () => {
     setIsOpen(true);

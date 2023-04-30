@@ -7,6 +7,11 @@
 
 }
 
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .overlay {
   display: flex;
   flex-direction: column;

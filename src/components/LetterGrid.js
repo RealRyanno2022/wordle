@@ -287,18 +287,21 @@ function LetterGrid() {
         remainingLetters[correctIndex] = null;
         newColors[i] = 'green';
         correctCount++;
+  
+        // Decrease the count of unmatched yellow letters if the letter is matched
+        if (unmatchedYellowLetters[letter] && unmatchedYellowLetters[letter] > 0) {
+          unmatchedYellowLetters[letter]--;
+        }
       } else {
         if (unmatchedYellowLetters[letter] && unmatchedYellowLetters[letter] > 0) {
           // Mark the letter as found and update the unmatchedYellowLetters object
           unmatchedYellowLetters[letter]--;
-          console.log(unmatchedYellowLetters)
           newColors[i] = 'yellow';
         } else {
           newColors[i] = '#444444';
         }
       }
     }
-    
   
     // Check for win condition
     if (correctCount === correctWord.length) {

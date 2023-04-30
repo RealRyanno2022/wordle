@@ -6,11 +6,13 @@ import Space from './Space';
 import InfoModal from './InfoModal.js';
 import StartModal from './StartModal';
 import EndModal from './EndModal';
+import Reminder from './Reminder';
 
 function Card() {
   const [value, setValue] = useState(null);
   const [letterGrid, setLetterGrid] = useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
 
+  let [clickedButton,setClickedButton] = useState('');
   let [isStackClicked, setIsStackClicked] = useState(false);
   let [isFeaturesClicked, setIsFeaturesClicked] = useState(false);
   let [isContactClicked, setIsContactClicked] = useState(false);
@@ -34,27 +36,19 @@ function Card() {
   return (
     <div className={styles.card}>
       <div className={styles.overlay}>
-        <Header
-          stackClickHandler={stackClickHandler}
-          featuresClickHandler={featuresClickHandler}
-          contactClickHandler={contactClickHandler}
-        />
-        <InfoModal
-          isStackClicked={isStackClicked}
-          isFeatureClicked={isFeaturesClicked}
-          isContactClicked={isContactClicked}
-        />
-        <StartModal
-          letterGrid={letterGrid}
-        />
-        <EndModal />
-        <Space />
-        <LetterGrid
-          letterGrid={letterGrid}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Header setClickedButton={setClickedButton} />
+          <Reminder />
+        </div>
+          <InfoModal clickedButton={clickedButton} />
+          <StartModal letterGrid={letterGrid} />
+          <EndModal />
+          <Space />
+          <LetterGrid letterGrid={letterGrid} />
       </div>
     </div>
   );
 }
 
 export default Card;
+

@@ -77,6 +77,11 @@
   }
 }
 
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('../../public/fonts/HelveticaNeue.otf');
+}
+
 .green .innerLetter,
 .yellow .innerLetter,
 .black .innerLetter {

@@ -36,6 +36,7 @@ const StartModal = ({ ...props }) => {
           <div className={styles.starter_modal_message}>{startMessage1}</div>
           <div className={styles.starter_modal_message}>{startMessage2}</div>
           <div className={styles.starter_modal_message}>{startMessage3}</div>
+          <div className={styles.starter_modal_message}>{startMessage4}</div>
           <div>
             {[...Array(1)].map((_, row) => (
               <div className={styles.lettergrid} key={row}>
@@ -66,7 +67,7 @@ const StartModal = ({ ...props }) => {
               </div>
             ))}
           </div>
-          <div className={styles.starter_modal_message}>{startMessage4}</div>
+          <div className={styles.starter_modal_message}>{startMessage5}</div>
           <div>
             {[...Array(1)].map((_, row) => (
               <div className={styles.lettergrid} key={row}>
@@ -97,8 +98,7 @@ const StartModal = ({ ...props }) => {
               </div>
             ))}
           </div>
-
-          <div className={styles.starter_modal_message}>{startMessage5}</div>
+          <div className={styles.starter_modal_message}>{startMessage6}</div>
           <div>
             {[...Array(1)].map((_, row) => (
               <div className={styles.lettergrid} key={row}>
@@ -129,7 +129,7 @@ const StartModal = ({ ...props }) => {
               </div>
             ))}
           </div>
-          <div className={styles.starter_modal_message}>{startMessage6}</div>
+                
 
           <div onClick={closeModal} className={styles.starter_modal_button}>
             OK

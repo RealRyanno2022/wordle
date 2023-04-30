@@ -4634,17 +4634,38 @@ const rawWords = [
       return count;
   };
   
-  const wordsWithThreeOrMoreVowels = words.filter((word) => {
-      return vowelCount(word) >= 3;
+  const wordsWithFiveVowels = words.filter((word) => {
+      return vowelCount(word) >= 5;
   })
   
-  // console.log(wordsWithThreeOrMoreVowels);
+  // console.log(wordsWithThreeVowels);
   
-  const arrayWithNoThreeVowelWords = words.filter(item => !wordsWithThreeOrMoreVowels.includes(item));
-  // console.log(arrayWithNoThreeVowelWords);
+  const arrayWithFiveVowelWords = words.filter(item => !wordsWithFiveVowels.includes(item));
+  console.log(arrayWithFiveVowelWords);
+
+  console.log(wordsWithFiveVowels);
+
   
+  function hasFiveVowels(word) {
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    let vowelCount = 0;
   
-  writeFile('words2.js', `module.exports = ${JSON.stringify(arrayWithNoThreeVowelWords)};`, function(err) {
+    for (let i = 0; i < word.length; i++) {
+      if (vowels.includes(word[i])) {
+        vowelCount++;
+      }
+    }
+  
+    return vowelCount === 5;
+  }
+  
+  const filteredWords = words.filter((word) => !hasFiveVowels(word));
+  
+  console.log(filteredWords);
+  
+ writeFile('words2.js', `module.exports = ${JSON.stringify(filteredWords)};`, function(err) {
       if (err) throw err;
       console.log('Array written to file');
   });
+
+

@@ -49,17 +49,41 @@
     visibility: hidden;
   }
 
-  .green,
-.yellow,
-.black,
-.gray,
-.lettergrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.125vh; /* Change gap to match the margin of .letter */
-  width: 80vw;
-  margin-left: auto;
-  margin-right: auto;
-  z-index: 1;
-}
+  green,
+  .yellow,
+  .black,
+  .gray,
+  .lettergrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.125vh;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
+  }
+  
+  /* When the zoom level is 125% or higher, the lettergrid will be smaller */
+  @media screen and (min-resolution: 1.25dppx) {
+    .green,
+    .yellow,
+    .black,
+    .gray,
+    .lettergrid {
+      width: 60vw; /* Adjust the width to a smaller value */
+      gap: 0.1vh; /* Adjust the gap to a smaller value */
+    }
+  }
+  
+  /* When the zoom level is 150% or higher, the lettergrid will be even smaller */
+  @media screen and (min-resolution: 1.5dppx) {
+    .green,
+    .yellow,
+    .black,
+    .gray,
+    .lettergrid {
+      width: 40vw; /* Adjust the width to an even smaller value */
+      gap: 0.075vh; /* Adjust the gap to an even smaller value */
+    }
+  }
