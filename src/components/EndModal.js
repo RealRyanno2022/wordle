@@ -20,11 +20,8 @@ const EndModal = ({ isOpen, setIsOpen, toggleEndModal }) => {
   return (
     <div>
       <div className={`${styles.end_modal} ${ModalClassName}`}>
-      <h1>Wurdle</h1>
+      <h1>Game Over</h1>
         <div className={styles.end_modal_inner}>
-            
-          {/* <div className={styles.end_modal_message}>{startMessage}</div>
-          <div className={styles.end_modal_message}>{start2}</div> */}
           <div onClick={closeEndModal} className={styles.end_modal_button}>OK</div>
         </div>
       </div>

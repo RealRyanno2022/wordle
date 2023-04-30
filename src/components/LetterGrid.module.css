@@ -1,3 +1,7 @@
+.green,
+.yellow,
+.black,
+.gray,
 .lettergrid {
   display: flex;
   flex-wrap: wrap;
@@ -19,17 +23,58 @@
 }
 
 .green {
+  --background: green;
+  --border-color: green;
   background-color: green;
+  animation: flip 0.5s ease forwards;
 }
 
 .yellow {
+  --background: yellow;
+  --border-color: yellow;
   background-color: yellow;
+  animation: flip 0.5s ease forwards;
 }
 
 .black {
-  background-color: black;
+  --background: #444444;
+  --border-color: #444444;
+  background-color: #444444;
+  animation: flip 0.5s ease forwards;
 }
 
 .lettergrid-container {
   padding-top: 80px;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+    background: gray;
+    border-color: #333;
+  }
+  45% {
+    transform: rotateX(90deg);
+    background: gray;
+    border-color: #333;
+  }
+  55% {
+    transform: rotateX(90deg);
+    background: var(--background);
+    border-color: var(--border-color);
+  }
+  100% {
+    transform: rotateX(0deg);
+    background: var(--background);
+    border-color: var(--border-color);
+    color: black;
+  }
+}
+
+.green,
+.yellow,
+.black {
+  /* Add the animation-delay property */
+  animation: flip 0.5s ease forwards;
+  animation-delay: var(--animation-delay, 0s);
 }

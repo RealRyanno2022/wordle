@@ -1,21 +1,20 @@
-import styles from './Letter.module.css';
-import React, { useEffect } from 'react';
-function Letter({ boxValue, colors, letterGridColors, ...props }) {
-  
-  useEffect(() => {
-    console.log(colors)
-  },[]);
-  
+import React from 'react';
+import styles from './Letter.module.css'; 
 
+const Letter = ({ boxValue, colors, index, className, style}) => {
   return (
-
-   
-    <div>
-      <div className={styles.letter}
-      {...props} 
-      style={{backgroundColor: colors}}>{boxValue}</div>
+    <div className={`${styles.letter} ${className}`}
+      key={index}
+      style={{
+        animationDelay: `${index * 0.3}s`,
+      }}
+    >
+      <div className={styles.innerLetter} style={style}>
+        {boxValue}
+      </div>
     </div>
   );
-}
+};
+
 export default Letter;
 

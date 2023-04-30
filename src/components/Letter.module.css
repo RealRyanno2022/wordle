@@ -1,7 +1,3 @@
-.green,
-.yellow,
-.black,
-.gray,
 .letter {
   height: 5vh;
   display: inline-row;
@@ -15,54 +11,76 @@
   font-size: 2vh;
   margin: 0.1vh;
   background: gray;
+  overflow: hidden; /* Add this line to prevent content from overflowing */
+  color: black;
+  background: var(--bg-color, gray);
 }
 
+.innerLetter {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2vh;
+}
 
-.green {
+.green .innerLetter,
+.yellow .innerLetter,
+.black .innerLetter,
+.gray .innerLetter {
+  background: gray;
+}
+
+.green .innerLetter {
   background-color: green;
+  animation: flip 0.5s ease forwards;
 }
 
-.yellow {
+.yellow .innerLetter {
   background-color: yellow;
+  animation: flip 0.5s ease forwards;
 }
 
-.black {
+.black .innerLetter {
   background-color: #444444;
+  animation: flip 0.5s ease forwards;
 }
 
-.gray {
+.gray .innerLetter {
   background-color: rgba(0,0,0,0);
   border: 2px solid gray;
 }
 
-.letter:not(.empty) {
-  transform: scale(1);
-}
-.letter.empty {
-  transform: scale(0.9);
-}
-
-@font-face {
-  font-family: 'HelveticaNeue';
-  src: url('../../public/fonts/HelveticaNeue.otf');
-}
-
 @keyframes flip {
-  0% {
-    transform: scaleY(1);
+  0%, 45% {
+    transform: rotateX(0);
+    background: var(--bg-color, gray);
+    border-color: #333;
   }
-
   50% {
-    background: white;
-    transform: scaleY(0);
+    transform: rotateX(90deg);
+    background: var(--bg-color, gray);
+    border-color: #333;
   }
-
+  55% {
+    transform: rotateX(90deg);
+    background: var(--background);
+    border-color: var(--border-color);
+  }
   100% {
-    transform: scaleY(1);
-    background: green;
+    transform: rotateX(0deg);
+    background: var(--background);
+    border-color: var(--border-color);
+    color: black;
   }
 }
 
-.flip {
-  animation: flip 500ms ease forwards;
+.green .innerLetter,
+.yellow .innerLetter,
+.black .innerLetter {
+  /* Add the animation-delay property */
+  animation: flip 0.5s ease forwards;
+  animation-delay: var(--animation-delay, 0s);
 }

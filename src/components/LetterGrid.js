@@ -299,8 +299,17 @@ function LetterGrid() {
     let newColors = [];
     let correctCount = 0;
   
-    // create a copy of the correct word to track which letters have already been matched
+    // Create a copy of the correct word to track which letters have already been matched
     let remainingLetters = correctWord.split('');
+  
+    // Create an object to store the frequency of unmatched yellow letters in the correct word
+    const unmatchedYellowLetters = remainingLetters.reduce((acc, letter) => {
+      if (!acc[letter]) {
+        acc[letter] = 0;
+      }
+      acc[letter]++;
+      return acc;
+    }, {});
   
     for (let i = 0; i < input.length; i++) {
       let letter = input[i];
@@ -308,19 +317,22 @@ function LetterGrid() {
       let correctLetter = correctWord[correctIndex];
   
       if (letter === correctLetter) {
-        // mark the letter as matched
+        // Mark the letter as matched
         remainingLetters[correctIndex] = null;
         newColors[i] = 'green';
         correctCount++;
-      } else if (remainingLetters.includes(letter)) {
-        // mark the letter as matched
-        let index = remainingLetters.indexOf(letter);
-        remainingLetters[index] = null;
-        newColors[i] = 'yellow';
       } else {
-        newColors[i] = '#444444';
+        if (unmatchedYellowLetters[letter] && unmatchedYellowLetters[letter] > 0) {
+          // Mark the letter as found and update the unmatchedYellowLetters object
+          unmatchedYellowLetters[letter]--;
+          console.log(unmatchedYellowLetters)
+          newColors[i] = 'yellow';
+        } else {
+          newColors[i] = '#444444';
+        }
       }
     }
+    
   
     // Check for win condition
     if (correctCount === correctWord.length) {
@@ -380,16 +392,28 @@ function LetterGrid() {
   return (
     <div>
       {[...Array(6)].map((_, row) => (
-        <div className={styles.lettergrid}  key={row}>
+        <div className={styles.lettergrid} key={row}>
           {[...Array(5)].map((_, col) => {
             const index = row * 5 + col;
+            let colorClass = '';
+            if (colors[index] === 'green') {
+              colorClass = styles.green;
+            } else if (colors[index] === 'yellow') {
+              colorClass = styles.yellow;
+            } else if (colors[index] === '#444444') {
+              colorClass = styles.black;
+            }
             return (
               <Letter
                 boxValue={letterGrid[index]}
                 colors={colors[index]}
                 key={index}
                 index={index}
-                style = {{ backgroundColor: colors[index] }}
+                className={colorClass}
+                style={{
+                  '--bg-color': 'gray',
+                  '--animation-delay': '0.3s',
+                }}
               />
             );
           })}
