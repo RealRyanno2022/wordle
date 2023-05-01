@@ -36,10 +36,9 @@ function Card() {
   return (
     <div className={styles.card}>
       <div className={styles.overlay}>
-        {/* <div style={{ display: 'flex', flexDirection: 'column' }}> */}
+   
           <Header setClickedButton={setClickedButton} />
           <Reminder />
-        {/* </div> */}
           <InfoModal clickedButton={clickedButton} />
           <StartModal letterGrid={letterGrid} />
           <EndModal />

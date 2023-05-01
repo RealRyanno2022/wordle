@@ -12,7 +12,7 @@ import WORDS from '../words/words.js';
 // ~~PRIORITY~~
 
 // HIGH
-// Add a EndModal when you start, run out of letters or get the correct answer
+// Add a EndModal when you run out of letters or get the correct answer
 // Fix the keyboard so that the letters change color depending on their board state
 // Add a global lettergridColor useState which originally makes all of the letter components have a style like 
 // .gray {
@@ -26,6 +26,7 @@ import WORDS from '../words/words.js';
 // Fix the overlay
 // Add word validation
 // Randomise the correct word
+// Make it so you can't press the rest of the screen when there's a modal up
 // Fix the header so it takes up the top of the screen
 
 function LetterGrid() {
@@ -35,6 +36,7 @@ function LetterGrid() {
   const [colors, setColors] = useState(Array(6).fill("gray"));
   let [currentRow,setCurrentRow] = useState([]);
   let [enterCount, setEnterCount] = useState(0);
+  const [currentRowInvalid, setCurrentRowInvalid] = useState(false);
   let[keyboardStyles, setKeyboardStyles] = useState(() => {
     const initialState = {};
     for (let i = 0; i < 26; i++) {
@@ -52,21 +54,17 @@ function LetterGrid() {
   let [invalidWord, setInvalidWord] = useState(false);
   let [invalidInputSize, setInvalidInputSize] = useState(false);
   const [key, setKey] = useState(0);
-
-
-
-
   const [winState, setWinState] = useState({ win: false, guesses: 0 });
   const [isEndModalOpen, setIsEndModalOpen] = useState(false);
-  let [backspacePressed, setBackspacePressed] = useState(false);
-  let [rowTest, setRowTest] = useState(1);
+
 
   function validWordChecker() {
     const word = currentRow.join("");
 
-    if(!(WORDS.includes(word))) {
+    if (!(WORDS.includes(word))) {
       setInvalidWord(true);
       setCurrentRow([]);
+      setCurrentRowInvalid(true); // Add this line to mark the current row as invalid
     } else {
       setInvalidWord(false);
     }
@@ -314,39 +312,42 @@ function LetterGrid() {
       window.removeEventListener("keydown", onKeyPress);
     };
   }, [input, letterGrid, winState]);
-
+  const currentRowIndex = Math.floor((input.length - 1) / 5);
 
 
   return (
     <div>
-      {[...Array(6)].map((_, row) => (
-        <div className={styles.lettergrid} key={row}>
-          {[...Array(5)].map((_, col) => {
-            const index = row * 5 + col;
-            let colorClass = '';
-            if (colors[index] === 'green') {
-              colorClass = styles.green;
-            } else if (colors[index] === 'yellow') {
-              colorClass = styles.yellow;
-            } else if (colors[index] === '#444444') {
-              colorClass = styles.black;
-            }
-            return (
-              <Letter
-                boxValue={letterGrid[index]}
-                colors={colors[index]}
-                key={index}
-                index={index}
-                className={colorClass}
-                style={{
-                  '--bg-color': 'gray',
-                  '--animation-delay': '0.3s',
-                }}
-              />
-            );
-          })}
-        </div>
-      ))}
+      {[...Array(6)].map((_, row) => {
+        const rowValidityChecker = currentRowInvalid && currentRowIndex === row ? "invalid-row" : "";
+        return (
+          <div className={`${styles.lettergrid} ${rowValidityChecker}`} key={row}>
+            {[...Array(5)].map((_, col) => {
+              const index = row * 5 + col;
+              let colorClass = '';
+              if (colors[index] === 'green') {
+                colorClass = styles.green;
+              } else if (colors[index] === 'yellow') {
+                colorClass = styles.yellow;
+              } else if (colors[index] === '#444444') {
+                colorClass = styles.black;
+              }
+              return (
+                <Letter
+                  boxValue={letterGrid[index]}
+                  colors={colors[index]}
+                  key={index}
+                  index={index}
+                  className={colorClass}
+                  style={{
+                    '--bg-color': 'gray',
+                    '--animation-delay': '0.3s',
+                  }}
+                />
+              );
+            })}
+          </div>
+        )
+      })}
       <Space />
       <div className={styles.keyboard}>
         {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((letter, index) => (
@@ -389,6 +390,8 @@ function LetterGrid() {
       <EndModal isOpen={isEndModalOpen} winState={winState} toggleEndModal={toggleEndModal} />
     </div>
   );
+
+  
 
 }
 

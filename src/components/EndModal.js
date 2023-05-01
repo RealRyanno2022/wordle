@@ -2,7 +2,7 @@ import styles from './EndModal.module.css';
 
 const EndModal = ({ isOpen, setIsOpen, toggleEndModal, winState }) => {
   const endLossMessage = winState ? `Unlucky, you couldn't solve the Wurdle! You got ${winState.guesses - winState.correctCount} letters correct and ${winState.correctCount} close letters. The correct word was ${winState.correctWord}` : '';
-  const endWinMessage = winState ? `Congrats, you got the Wordle! It took you ${winState.guesses / 5} guesses. Here's a cookie: 🍪` : '';
+  const endWinMessage = winState ? `Congrats, you got the Wurdle! It took you ${winState.guesses / 5} guesses. Here's a cookie: 🍪` : '';
 
   const closeEndModal = () => {
     toggleEndModal();
