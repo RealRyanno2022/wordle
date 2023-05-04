@@ -8,6 +8,7 @@ import EndModal from './EndModal';
 import keyStyles from './Key.module.css';
 import Space from './Space';
 import WORDS from '../words/words.js';
+import StartModal from './StartModal';
 
 
 // ~~PRIORITY~~
@@ -33,6 +34,7 @@ import WORDS from '../words/words.js';
 function LetterGrid() {
 
   const [letterGrid, setLetterGrid] = useState(Array(30).fill(''));
+  let [canKeyPress, setCanKeyPress] = useState(false);
   const [input, setInput] = useState([]);
   const [colors, setColors] = useState(Array(6).fill("gray"));
   let [currentRow,setCurrentRow] = useState([]);
@@ -46,13 +48,6 @@ function LetterGrid() {
     }
     return initialState;
   });
-  // let[newKeyboardStyles, setNewKeyboardStyles] = useState(() => {
-  //   const initialState = {};
-  //   for (let i = 0; i < 26; i++) {
-  //     initialState[String.fromCharCode(65 + i)] = 'gray';
-  //   }
-  //   return initialState;
-  // });
   let [invalidWord, setInvalidWord] = useState(false);
   let [invalidInputSize, setInvalidInputSize] = useState(false);
   const [key, setKey] = useState(0);
@@ -144,6 +139,12 @@ function LetterGrid() {
     const bannedLetters = ["ARROWUP","ARROWDOWN","ARROWRIGHT","ARROWLEFT","SHIFT","CONTROL","ALT","DELETE","HOME","PAGEUP","PAGEDOWN","END","OS","ALTGRAPH","ESCAPE",
       "#", "[", "]", ".", "/", "${\}", "(", ")", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "!", "?", "<", ">", "{", "}", "-", "_", "+", "=", "£", "$", "%", "^", "&", "*", "`", "¬", "  ", " ", "|", "~",
     ];
+    // Check for isStartModalDisplayed here
+    if (isStartModalDisplayed) {
+      console.log("vine boom");
+      return;
+    }
+    
     let clickedLetter = e.key.toUpperCase();
     console.log(clickedLetter);
   
@@ -324,6 +325,7 @@ function LetterGrid() {
 
   return (
     <div>
+      {isStartModalDisplayed &&  <StartModal isOpen={isStartModalDisplayed} setIsOpen={setIsStartModalDisplayed} handleModalClose={handleModalClose} />}
       {[...Array(6)].map((_, row) => {
         const rowValidityChecker = (invalidWord || invalidInputSize) && currentRowIndex === row ? styles.invalid-row : "";
         return (

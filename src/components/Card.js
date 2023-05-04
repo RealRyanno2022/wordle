@@ -9,7 +9,7 @@ import EndModal from './EndModal';
 import Reminder from './Reminder';
 import ClickWrapper from './ClickWrapper';
 
-function Card({ handleModalClick, canClick }) {
+function Card({ handleModalClick, canClick, canKeyPress }) {
   const [isStartModalDisplayed, setIsStartModalDisplayed] = useState(false);
   const [value, setValue] = useState(null);
   const [letterGrid, setLetterGrid] = useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);

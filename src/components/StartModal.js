@@ -4,7 +4,13 @@ import Letter from './Letter';
 import letterStyles from './LetterGrid.module.css';
 
 
-const StartModal = ({...props }) => {
+const StartModal = ({isOpen, setIsOpen, ...props }) => {
+
+  if(!isOpen) {
+    return null;
+  }
+
+
   const startMessage1 = 'Guess the Wurdle in 6 tries.';
   const startMessage2 = 'Each guess must be a valid 5 letter word.';
   const startMessage3 = 'Examples:';
@@ -19,7 +25,6 @@ const StartModal = ({...props }) => {
   let letterGrid3 = ['R', 'E', 'A', 'C', 'T']
   let colors3 = ['#444444', '#444444', '#444444', '#444444', '#444444'];
 
-  const [isOpen, setIsOpen] = useState(true);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -131,7 +136,7 @@ const StartModal = ({...props }) => {
           </div>
                 
 
-          <div onClick={closeModal} className={styles.starter_modal_button}>
+          <div onClick={closeModal} style={{ pointerEvents: 'auto' }} className={styles.starter_modal_button}>
             OK
           </div>
         </div>
