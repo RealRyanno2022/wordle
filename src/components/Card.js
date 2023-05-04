@@ -16,6 +16,7 @@ function Card({ handleModalClick, canClick }) {
   const [disableClick, setDisableClick] = useState(false);
   const [clickedButton, setClickedButton] = useState('');
 
+  //
   useEffect(() => {
     setDisableClick(isStartModalDisplayed);
   }, [isStartModalDisplayed]);
