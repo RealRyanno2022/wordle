@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Card.module.css';
 import Header from './Header';
 import LetterGrid from './LetterGrid';
@@ -7,47 +7,42 @@ import InfoModal from './InfoModal.js';
 import StartModal from './StartModal';
 import EndModal from './EndModal';
 import Reminder from './Reminder';
+import ClickWrapper from './ClickWrapper';
 
-function Card() {
+function Card({ handleModalClick, canClick }) {
+  const [isStartModalDisplayed, setIsStartModalDisplayed] = useState(false);
   const [value, setValue] = useState(null);
   const [letterGrid, setLetterGrid] = useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
+  const [disableClick, setDisableClick] = useState(false);
+  const [clickedButton, setClickedButton] = useState('');
 
-  let [clickedButton,setClickedButton] = useState('');
-  let [isStackClicked, setIsStackClicked] = useState(false);
-  let [isFeaturesClicked, setIsFeaturesClicked] = useState(false);
-  let [isContactClicked, setIsContactClicked] = useState(false);
+  useEffect(() => {
+    setDisableClick(isStartModalDisplayed);
+  }, [isStartModalDisplayed]);
 
-  const handleButtonClick = (newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    window.addEventListener("click", handleModalClick);
 
-  const stackClickHandler = () => {
-    setIsStackClicked((prev) => !prev);
-  };
-
-  const featuresClickHandler = () => {
-    setIsFeaturesClicked((prev) => !prev);
-  };
-
-  const contactClickHandler = () => {
-    setIsContactClicked((prev) => !prev);
-  };
+    return () => {
+      window.removeEventListener("click", handleModalClick);
+    };
+  }, [handleModalClick]);
 
   return (
     <div className={styles.card}>
-      <div className={styles.overlay}>
-   
-          <Header setClickedButton={setClickedButton} />
-          <Reminder />
-          <InfoModal clickedButton={clickedButton} />
-          <StartModal letterGrid={letterGrid} />
-          <EndModal />
-          <Space />
-          <LetterGrid letterGrid={letterGrid} />
-      </div>
+      <ClickWrapper disableClick={disableClick} canClick={canClick}>
+        <Header setClickedButton={setClickedButton} />
+        <Reminder />
+        <InfoModal clickedButton={clickedButton} />
+        
+        <EndModal />
+        <Space />
+        <LetterGrid letterGrid={letterGrid} />
+        
+      </ClickWrapper>
+      <StartModal letterGrid={letterGrid} handleModalClick={handleModalClick} />
     </div>
   );
 }
 
 export default Card;
-

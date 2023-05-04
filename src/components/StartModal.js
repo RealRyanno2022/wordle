@@ -4,7 +4,7 @@ import Letter from './Letter';
 import letterStyles from './LetterGrid.module.css';
 
 
-const StartModal = ({ ...props }) => {
+const StartModal = ({...props }) => {
   const startMessage1 = 'Guess the Wurdle in 6 tries.';
   const startMessage2 = 'Each guess must be a valid 5 letter word.';
   const startMessage3 = 'Examples:';

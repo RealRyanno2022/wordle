@@ -11,6 +11,11 @@
   z-index: 1;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 body {
   margin: 0;
   padding: 0;
