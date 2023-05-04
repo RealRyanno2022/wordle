@@ -65,8 +65,10 @@ function LetterGrid() {
       setInvalidWord(true);
       setCurrentRow([]);
       setCurrentRowInvalid(true); // Add this line to mark the current row as invalid
+      console.log("invalid");
     } else {
       setInvalidWord(false);
+      console.log("valid");
     }
   }
 
@@ -91,6 +93,7 @@ function LetterGrid() {
   
 
   function handleKeyClick(clickedLetter) {
+    setCurrentRowInvalid(false);
     if (!winState.win) {
       const currentRowLength = input.length - enterCount * 5;
       console.log(currentRowLength);
@@ -133,37 +136,41 @@ function LetterGrid() {
   function handleKeyPress(e) {
     const bannedLetters = ["ARROWUP","ARROWDOWN","ARROWRIGHT","ARROWLEFT","SHIFT","CONTROL","ALT","DELETE","HOME","PAGEUP","PAGEDOWN","END","OS","ALTGRAPH","ESCAPE",
       "#", "[", "]", ".", "/", "${\}", "(", ")", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "*", "-", "=", ",", ";", ":", "'", "`", "+", "<", ">", "?", "~", "_", "|", "\\"];
-    const clickedLetter = e.key.toUpperCase();
-  
-    if (bannedLetters.includes(clickedLetter)) {
-      return;
-    }
-  
-    if (winState.win) {
-      return;
-    }
-  
-    if (clickedLetter === "ENTER") {
-      handleEnterClick(e);
-      return;
-    }
-  
-    e.preventDefault();
-  
-    if (typeof clickedLetter === "string" && clickedLetter !== "") {
+      const clickedLetter = e.key.toUpperCase();
+      setCurrentRowInvalid(false);
       const currentRowLength = input.length - enterCount * 5;
-      if (currentRowLength <= 4) {
-        setInput([...input, clickedLetter.toUpperCase()]);
-  
-        const emptyIndex = letterGrid.indexOf("");
-        if (emptyIndex !== -1) {
-          const newLetterGrid = [...letterGrid];
-          newLetterGrid[emptyIndex] = clickedLetter;
-          setLetterGrid(newLetterGrid);
+
+      if (bannedLetters.includes(clickedLetter)) {
+        return;
+      }
+
+      if (winState.win) {
+        return;
+      }
+
+      if (clickedLetter === "ENTER") {
+        handleEnterClick(e);
+        return;
+      }
+
+      if (currentRowLength === 4 && invalidWord) {
+        return;
+      }
+
+      e.preventDefault();
+
+      if (typeof clickedLetter === "string" && clickedLetter !== "") {
+        if (currentRowLength < 4 || !invalidWord) {
+          setInput([...input, clickedLetter.toUpperCase()]);
+          const emptyIndex = letterGrid.indexOf("");
+          if (emptyIndex !== -1) {
+            const newLetterGrid = [...letterGrid];
+            newLetterGrid[emptyIndex] = clickedLetter;
+            setLetterGrid(newLetterGrid);
+          }
         }
       }
     }
-  }
   
   
  
@@ -175,7 +182,7 @@ function LetterGrid() {
   let correctWord = "ABOTT";
 
   useEffect(() => {
-    if (input.length % 5 === 0 && input.length > 0 && key > 0) {
+    if (input.length % 5 === 0 && input.length > 0 && key > 0 && invalidWord) {
       decideColors(input, correctWord);
     }
   }, [key]);
@@ -318,7 +325,7 @@ function LetterGrid() {
   return (
     <div>
       {[...Array(6)].map((_, row) => {
-        const rowValidityChecker = currentRowInvalid && currentRowIndex === row ? "invalid-row" : "";
+        const rowValidityChecker = (invalidWord || invalidInputSize) && currentRowIndex === row ? styles.invalid-row : "";
         return (
           <div className={`${styles.lettergrid} ${rowValidityChecker}`} key={row}>
             {[...Array(5)].map((_, col) => {
