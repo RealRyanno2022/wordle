@@ -10,26 +10,42 @@ import Space from './Space';
 import WORDS from '../words/words.js';
 import StartModal from './StartModal';
 
-
-// ~~PRIORITY~~
-
-// HIGH
-// Add a EndModal when you run out of letters or get the correct answer
-// Fix the keyboard so that the letters change color depending on their board state
-// Add a global lettergridColor useState which originally makes all of the letter components have a style like 
-// .gray {
+// NEW TASKS
+// - Allow you to click on the Keyboard and InfoModals after hitting OK
+// - Display an EndModal when you win or run out of letters
+// - Allow you to hit OK
+// - Fix Reminder.js so that the appropriate messages are displayed when needed
+// - Add a shaking animation to the row when an inappropriate action is taken
+// - Add random correctWord selection
+// - Add better word validation
+// - Somehow give all Letters this formatting // .gray {
 //   background-color: rgba(0,0,0,0);
 //   border: 2px solid gray;
 // }
-// but changes according to the applied color
-// MEDIUM
-// LOW
+// - Add color functionality to computed keyboard keys
 
-// Fix the overlay
-// Add word validation
-// Randomise the correct word
-// Make it so you can't press the rest of the screen when there's a modal up
-// Fix the header so it takes up the top of the screen
+
+
+
+
+
+
+
+
+// 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function LetterGrid() {
 

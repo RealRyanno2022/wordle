@@ -10,16 +10,15 @@ import Reminder from './Reminder';
 import ClickWrapper from './ClickWrapper';
 
 function Card({ handleModalClick, canClick, canKeyPress }) {
-  const [isStartModalDisplayed, setIsStartModalDisplayed] = useState(false);
-  const [value, setValue] = useState(null);
   const [letterGrid, setLetterGrid] = useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
   const [disableClick, setDisableClick] = useState(false);
   const [clickedButton, setClickedButton] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //
-  useEffect(() => {
-    setDisableClick(isStartModalDisplayed);
-  }, [isStartModalDisplayed]);
+  function OKClickHandler() {
+    setIsModalOpen(false);
+    setDisableClick(false);
+  }
 
   useEffect(() => {
     window.addEventListener("click", handleModalClick);
@@ -31,19 +30,16 @@ function Card({ handleModalClick, canClick, canKeyPress }) {
 
   return (
     <div className={styles.card}>
-      <ClickWrapper disableClick={disableClick} canClick={canClick}>
+      <ClickWrapper disableClick={disableClick} canClick={canClick} className={disableClick ? styles.clickWrapper : ''}>
         <Header setClickedButton={setClickedButton} />
         <Reminder />
         <InfoModal clickedButton={clickedButton} />
-        
         <EndModal />
         <Space />
         <LetterGrid letterGrid={letterGrid} />
-        
       </ClickWrapper>
-      <StartModal letterGrid={letterGrid} handleModalClick={handleModalClick} />
+      <StartModal letterGrid={letterGrid} isOpen={isModalOpen} setIsOpen={setIsModalOpen} OKClickHandler={OKClickHandler} />
     </div>
   );
 }
-
 export default Card;

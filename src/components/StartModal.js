@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './StartModal.module.css';
 import Letter from './Letter';
 import letterStyles from './LetterGrid.module.css';
 
+const StartModal = ({ isOpen, setIsOpen, onClose, OKClickHandler, ...props }) => {
+  const [disableClick, setDisableClick] = useState(true);
 
-const StartModal = ({isOpen, setIsOpen, ...props }) => {
+  useEffect(() => {
+    setDisableClick(isOpen);
+  }, [isOpen]);
 
-  if(!isOpen) {
+  if (!isOpen) {
     return null;
   }
-
 
   const startMessage1 = 'Guess the Wurdle in 6 tries.';
   const startMessage2 = 'Each guess must be a valid 5 letter word.';
   const startMessage3 = 'Examples:';
-  const startMessage4 = "The letter A is in the word and in the correct place"
-  const startMessage5 = "The letter P is in the word but not in the correct place"
-  const startMessage6 = "None of these letters are in the correct word"
+  const startMessage4 = 'The letter A is in the word and in the correct place';
+  const startMessage5 = 'The letter P is in the word but not in the correct place';
+  const startMessage6 = 'None of these letters are in the correct word';
 
-  let letterGrid1 = ['A', 'B', 'O', 'T', 'T']
-  let colors = ['green', '#444444', '#444444', '#444444', '#444444'];
-  let letterGrid2 = ['H', 'A', 'P', 'P', 'Y']
-  let colors2 = ['#444444', '#444444', 'yellow', '#444444', '#444444'];
-  let letterGrid3 = ['R', 'E', 'A', 'C', 'T']
-  let colors3 = ['#444444', '#444444', '#444444', '#444444', '#444444'];
+  const letterGrid1 = ['A', 'B', 'O', 'T', 'T'];
+  const colors = ['green', '#444444', '#444444', '#444444', '#444444'];
+  const letterGrid2 = ['H', 'A', 'P', 'P', 'Y'];
+  const colors2 = ['#444444', '#444444', 'yellow', '#444444', '#444444'];
+  const letterGrid3 = ['R', 'E', 'A', 'C', 'T'];
+  const colors3 = ['#444444', '#444444', '#444444', '#444444', '#444444'];
 
-
-  const closeModal = () => {
-    setIsOpen(false);
-    console.log('closed');
-  };
 
   const ModalClassName = isOpen ? styles.starter_modal_open : styles.starter_modal_closed;
 
@@ -136,7 +134,7 @@ const StartModal = ({isOpen, setIsOpen, ...props }) => {
           </div>
                 
 
-          <div onClick={closeModal} style={{ pointerEvents: 'auto' }} className={styles.starter_modal_button}>
+          <div onClick={OKClickHandler} style={{ pointerEvents: 'auto' }} className={styles.starter_modal_button}>
             OK
           </div>
         </div>
